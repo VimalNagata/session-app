@@ -5,6 +5,8 @@ phases:
     runtime-versions:
       nodejs: 14 
     commands:
+      - echo "Cleaning up node_modules"
+      - rm -rf node_modules
       - echo "Installing dependencies"
       - npm install
 
