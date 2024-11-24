@@ -30,6 +30,7 @@ const Home = () => {
     <div style={styles.container}>
       <h1 style={styles.heading}>Welcome to Sessions Platform</h1>
       <p>Hello, {auth.user?.profile.email}</p>
+      <p>You have logged in as a {role}</p>
 
       {role === "teacher" && <Services />}
       {role === "student" && <Bookings />}
