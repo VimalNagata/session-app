@@ -49,8 +49,8 @@ function App() {
           element={
             <div>
               <h2>Welcome to Sessions Platform</h2>
-              <button onClick={() => auth.signinRedirect()}>Sign in</button>
-              <button onClick={signoutRedirect}>Sign out</button>
+              <button onClick={() => auth.signinRedirect()}>Sign In</button>
+              <button onClick={signoutRedirect}>Sign Out</button>
             </div>
           }
         />
