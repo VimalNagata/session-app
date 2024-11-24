@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { useAuth } from "react-oidc-context";
-import { useNavigate } from "react-router-dom";
 import Services from "./Services";
 import Bookings from "./Bookings";
+import ProfileForm from "./ProfileForm";
 
 const Home = () => {
   const auth = useAuth();
   const [role, setRole] = useState(null);
-  const navigate = useNavigate();
+  const [showProfileForm, setShowProfileForm] = useState(false);
 
   useEffect(() => {
     if (auth.user) {
@@ -15,12 +15,12 @@ const Home = () => {
       const userRole = auth.user.profile["custom:role"];
       setRole(userRole);
 
-      // Redirect to ProfileForm if role is not set
+      // Show ProfileForm if the role is not set
       if (!userRole) {
-        navigate("/profile"); // Redirect to ProfileForm
+        setShowProfileForm(true);
       }
     }
-  }, [auth.user, navigate]);
+  }, [auth.user]);
 
   const signoutRedirect = () => {
     const clientId = "2fpemjqos4302bfaf65g06l8g0"; // Your Cognito App Client ID
@@ -37,10 +37,22 @@ const Home = () => {
     <div style={styles.container}>
       <h1 style={styles.heading}>Welcome to Sessions Platform</h1>
       <p>Hello, {auth.user?.profile.email}</p>
-      {role && <p>You have logged in as a {role}</p>}
-
-      {role === "teacher" && <Services />}
-      {role === "student" && <Bookings />}
+      
+      {/* Show ProfileForm if role is not set */}
+      {showProfileForm ? (
+        <ProfileForm
+          onRoleUpdate={(updatedRole) => {
+            setRole(updatedRole);
+            setShowProfileForm(false); // Hide the form once the role is updated
+          }}
+        />
+      ) : (
+        <>
+          {role && <p>You have logged in as a {role}</p>}
+          {role === "teacher" && <Services />}
+          {role === "student" && <Bookings />}
+        </>
+      )}
 
       <button style={styles.signoutButton} onClick={signoutRedirect}>
         Sign Out

@@ -1,28 +1,24 @@
 import React, { useState, useEffect } from "react";
-import { Auth } from "aws-amplify";
+import { useAuth } from "react-oidc-context";
 
-const ProfileForm = () => {
+const ProfileForm = ({ onRoleUpdate }) => {
+  const auth = useAuth();
   const [role, setRole] = useState("");
   const [formData, setFormData] = useState({});
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const fetchAttributes = async () => {
-      try {
-        const user = await Auth.currentAuthenticatedUser();
-        const userRole = user.attributes["custom:role"];
-        if (userRole) {
-          setRole(userRole); // Set the role if it exists
-        }
-        setFormData(user.attributes); // Pre-fill existing attributes
-        setLoading(false);
-      } catch (error) {
-        console.error("Error fetching user attributes:", error);
+    if (auth.user) {
+      // Fetch user attributes from OIDC claims
+      const userAttributes = auth.user.profile;
+      const userRole = userAttributes["custom:role"];
+      if (userRole) {
+        setRole(userRole); // Set the role if it exists
       }
-    };
-
-    fetchAttributes();
-  }, []);
+      setFormData(userAttributes); // Pre-fill existing attributes
+      setLoading(false);
+    }
+  }, [auth.user]);
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -32,11 +28,16 @@ const ProfileForm = () => {
     e.preventDefault();
     if (role) {
       try {
-        const user = await Auth.currentAuthenticatedUser();
-        await Auth.updateUserAttributes(user, { "custom:role": role }); // Save the selected role
+        // Update the role attribute
+        const updatedProfile = { ...formData, "custom:role": role };
+        await auth.user.updateProfile(updatedProfile); // Update the profile
         alert("Role updated successfully! Please complete the profile.");
+        if (onRoleUpdate) {
+          onRoleUpdate(role); // Notify parent component
+        }
       } catch (error) {
         console.error("Error updating role:", error);
+        alert("Failed to update role. Please try again.");
       }
     }
   };
@@ -44,11 +45,12 @@ const ProfileForm = () => {
   const handleProfileSubmit = async (e) => {
     e.preventDefault();
     try {
-      const user = await Auth.currentAuthenticatedUser();
-      await Auth.updateUserAttributes(user, formData); // Update user attributes
+      // Update user attributes
+      await auth.user.updateProfile(formData);
       alert("Profile updated successfully!");
     } catch (error) {
       console.error("Error updating profile:", error);
+      alert("Failed to update profile. Please try again.");
     }
   };
 
