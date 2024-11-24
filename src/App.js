@@ -1,5 +1,7 @@
 import React from "react";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { useAuth } from "react-oidc-context";
+import Home from "./components/Home"; // Import the Home component
 
 function App() {
   const auth = useAuth();
@@ -26,27 +28,34 @@ function App() {
     );
   }
 
-  if (auth.isAuthenticated) {
-    return (
-      <div>
-        <h1>Welcome!</h1>
-        <p>Hello: {auth.user?.profile.email}</p>
-
-        {/* Debugging tokens */}
-        {/* Uncomment tokens only for debugging */}
-        {/* <pre> ID Token: {auth.user?.id_token} </pre> */}
-        {/* <pre> Access Token: {auth.user?.access_token} </pre> */}
-        
-        <button onClick={() => auth.removeUser()}>Sign out</button>
-      </div>
-    );
-  }
-
   return (
-    <div>
-      <button onClick={() => auth.signinRedirect()}>Sign in</button>
-      <button onClick={() => signoutRedirect()}>Sign out</button>
-    </div>
+    <Router>
+      <Routes>
+        <Route
+          path="/home"
+          element={
+            auth.isAuthenticated ? (
+              <Home signoutRedirect={signoutRedirect} />
+            ) : (
+              <div>
+                <h2>Please Sign In</h2>
+                <button onClick={() => auth.signinRedirect()}>Sign in</button>
+              </div>
+            )
+          }
+        />
+        <Route
+          path="/"
+          element={
+            <div>
+              <h2>Welcome to Sessions Platform</h2>
+              <button onClick={() => auth.signinRedirect()}>Sign in</button>
+              <button onClick={signoutRedirect}>Sign out</button>
+            </div>
+          }
+        />
+      </Routes>
+    </Router>
   );
 }
 
