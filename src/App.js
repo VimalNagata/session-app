@@ -48,7 +48,7 @@ function App() {
           path="/"
           element={
             <div>
-              <h2>Welcome to Sessions Platform</h2>
+              <h2>Welcome to Connect for Sessions Platform</h2>
               <button onClick={() => auth.signinRedirect()}>Sign In</button>
               <button onClick={signoutRedirect}>Sign Out</button>
             </div>
