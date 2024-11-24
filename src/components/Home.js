@@ -1,19 +1,26 @@
 import React, { useEffect, useState } from "react";
 import { useAuth } from "react-oidc-context";
+import { useNavigate } from "react-router-dom";
 import Services from "./Services";
 import Bookings from "./Bookings";
 
 const Home = () => {
   const auth = useAuth();
   const [role, setRole] = useState(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (auth.user) {
-      // Example: Extract role from Cognito user claims
-      const userRole = auth.user.profile["custom:role"]; // Replace with actual claim or attribute
+      // Extract the role from Cognito user claims
+      const userRole = auth.user.profile["custom:role"];
       setRole(userRole);
+
+      // Redirect to ProfileForm if role is not set
+      if (!userRole) {
+        navigate("/profile"); // Redirect to ProfileForm
+      }
     }
-  }, [auth.user]);
+  }, [auth.user, navigate]);
 
   const signoutRedirect = () => {
     const clientId = "2fpemjqos4302bfaf65g06l8g0"; // Your Cognito App Client ID
@@ -30,7 +37,7 @@ const Home = () => {
     <div style={styles.container}>
       <h1 style={styles.heading}>Welcome to Sessions Platform</h1>
       <p>Hello, {auth.user?.profile.email}</p>
-      <p>You have logged in as a {role}</p>
+      {role && <p>You have logged in as a {role}</p>}
 
       {role === "teacher" && <Services />}
       {role === "student" && <Bookings />}
