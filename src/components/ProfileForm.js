@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { useAuth } from "react-oidc-context";
+import axios from "axios";
 
-const ProfileForm = ({ onRoleUpdate }) => {
+const ProfileForm = () => {
   const auth = useAuth();
   const [role, setRole] = useState("");
   const [formData, setFormData] = useState({});
@@ -9,7 +10,6 @@ const ProfileForm = ({ onRoleUpdate }) => {
 
   useEffect(() => {
     if (auth.user) {
-      // Fetch user attributes from OIDC claims
       const userAttributes = auth.user.profile;
       const userRole = userAttributes["custom:role"];
       if (userRole) {
@@ -28,13 +28,12 @@ const ProfileForm = ({ onRoleUpdate }) => {
     e.preventDefault();
     if (role) {
       try {
-        // Update the role attribute
-        const updatedProfile = { ...formData, "custom:role": role };
-        await auth.user.updateProfile(updatedProfile); // Update the profile
+        const attributes = { "custom:role": role };
+        await axios.post("https://sessions.red/update-profile", {
+          access_token: auth.user.access_token,
+          attributes,
+        });
         alert("Role updated successfully! Please complete the profile.");
-        if (onRoleUpdate) {
-          onRoleUpdate(role); // Notify parent component
-        }
       } catch (error) {
         console.error("Error updating role:", error);
         alert("Failed to update role. Please try again.");
@@ -45,8 +44,10 @@ const ProfileForm = ({ onRoleUpdate }) => {
   const handleProfileSubmit = async (e) => {
     e.preventDefault();
     try {
-      // Update user attributes
-      await auth.user.updateProfile(formData);
+      await axios.post("https://sessions.red/update-profile", {
+        access_token: auth.user.access_token,
+        attributes: formData,
+      });
       alert("Profile updated successfully!");
     } catch (error) {
       console.error("Error updating profile:", error);
