@@ -44,11 +44,18 @@ const ProfileForm = () => {
   const handleProfileSubmit = async (e) => {
     e.preventDefault();
     try {
-      await axios.post("https://sessions.red/update-profile", {
+      const response = await axios.post("https://sessions.red/update-profile", {
         access_token: auth.user.access_token,
         attributes: formData,
       });
-      alert("Profile updated successfully!");
+  
+      if (response.status === 200) {
+        const { message, details } = response.data;
+        console.log("Profile update details:", details);
+        alert(`${message}\nDetails: ${JSON.stringify(details, null, 2)}`);
+      } else {
+        alert("Profile updated but response indicates a possible issue.");
+      }
     } catch (error) {
       console.error("Error updating profile:", error);
       alert("Failed to update profile. Please try again.");
