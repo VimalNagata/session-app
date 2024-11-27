@@ -1,4 +1,14 @@
 /* styles.css */
+body {
+  background-image: url('https://d2gc27jy00o0yk.cloudfront.net/default-assets/image/cognito-image-background-page-dark.svg');
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+  height: 100vh;
+  margin: 0;
+  font-family: Arial, sans-serif;
+  color: #ffffff; /* Ensure text is visible on the dark background */
+}
 
 /* General Container */
 .container {
@@ -7,7 +17,6 @@
     align-items: center;
     height: 100vh;
     background-color: #1a202c; /* Dark background */
-    background-image: url('/background-pattern.png');
     background-size: cover;
     color: #fff;
   }

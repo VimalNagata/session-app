@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useAuth } from "react-oidc-context";
 import axios from "axios";
-import './styles.css'; // Import the CSS file
+import '../styles.css'; // Import the CSS file
 
 const ProfileForm = () => {
   const auth = useAuth();
