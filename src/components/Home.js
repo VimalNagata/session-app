@@ -35,7 +35,7 @@ const Home = () => {
 
   return (
     <div style={styles.container}>
-      <h1 style={styles.heading}>Welcome to Sessions Platform</h1>
+      <h1 style={styles.heading}>Welcome to Expert Sessions</h1>
       <p>Hello, {auth.user?.profile.email}</p>
       
       {/* Show ProfileForm if role is not set */}
