@@ -9,7 +9,7 @@ const cognitoAuthConfig = {
   client_id: "2fpemjqos4302bfaf65g06l8g0",
   redirect_uri: "https://sessions.red/home", // Ensure this matches the callback URL in Cognito
   response_type: "code",
-  scope: "email openid phone profile",
+  scope: "email openid phone profile aws.cognito.signin.user.admin", // Include the necessary admin scope
 };
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
