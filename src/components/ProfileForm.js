@@ -34,6 +34,7 @@ const ProfileForm = () => {
           access_token: auth.user.access_token,
           attributes,
         });
+        setErrors(null); // Clear previous errors
         alert("Role updated successfully! Please complete the profile.");
       } catch (error) {
         console.error("Error updating role:", error);
@@ -63,10 +64,10 @@ const ProfileForm = () => {
         const formattedError = errorMessage
           .split("\n")
           .filter((line) => line.trim() !== "")
-          .join("<br />"); // Format error with line breaks
+          .map((line, index) => <p key={index}>{line}</p>); // Display as paragraphs
         setErrors(formattedError);
       } else {
-        setErrors("Failed to update profile. Please try again.");
+        setErrors(<p>Failed to update profile. Please try again.</p>);
       }
     }
   };
@@ -91,8 +92,8 @@ const ProfileForm = () => {
 
   if (!role) {
     return (
-      <form onSubmit={handleRoleSubmit}>
-        <h1>Select Your Role</h1>
+      <form onSubmit={handleRoleSubmit} style={styles.formContainer}>
+        <h1 style={styles.heading}>Select Your Role</h1>
         <label>
           <input
             type="radio"
@@ -111,8 +112,10 @@ const ProfileForm = () => {
           />
           Student
         </label>
-        <button type="submit">Save Role</button>
-        {errors && <div style={{ color: "red" }}>{errors}</div>}
+        <button style={styles.button} type="submit">
+          Save Role
+        </button>
+        {errors && <div style={styles.errorMessage}>{errors}</div>}
       </form>
     );
   }
@@ -120,34 +123,96 @@ const ProfileForm = () => {
   const fieldsToRender = role === "Teacher" ? teacherFields : studentFields;
 
   return (
-    <form onSubmit={handleProfileSubmit}>
-      <h1>{role} Profile</h1>
-      {fieldsToRender.map((field) => (
-        <div key={field.name}>
-          <label>{field.label}:</label>
-          <input
-            type="text"
-            name={field.name}
-            value={formData[field.name] || ""}
-            onChange={handleChange}
-          />
-        </div>
-      ))}
-      <button type="submit">Save Profile</button>
-      {errors && (
-        <div
-          style={{
-            color: "red",
-            marginTop: "20px",
-            textAlign: "left",
-            whiteSpace: "pre-wrap",
-          }}
-        >
-          {errors}
-        </div>
-      )}
-    </form>
+    <div style={styles.container}>
+      <h1 style={styles.heading}>Welcome to Sessions Platform</h1>
+      <p style={styles.subHeading}>Hello, {auth.user?.profile.email}</p>
+
+      <div style={styles.formContainer}>
+        <h2 style={styles.heading}>{role} Profile</h2>
+        {fieldsToRender.map((field) => (
+          <div style={styles.formGroup} key={field.name}>
+            <label style={styles.label}>{field.label}:</label>
+            <input
+              type="text"
+              name={field.name}
+              value={formData[field.name] || ""}
+              onChange={handleChange}
+              style={styles.input}
+            />
+          </div>
+        ))}
+        <button style={styles.button} onClick={handleProfileSubmit}>
+          Save Profile
+        </button>
+        {errors && <div style={styles.errorMessage}>{errors}</div>}
+      </div>
+    </div>
   );
+};
+
+const styles = {
+  container: {
+    padding: "20px",
+    textAlign: "center",
+    fontFamily: "Arial, sans-serif",
+    backgroundColor: "#f5f5f5",
+    minHeight: "100vh",
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  heading: {
+    fontSize: "24px",
+    marginBottom: "20px",
+  },
+  subHeading: {
+    fontSize: "18px",
+    marginBottom: "40px",
+  },
+  formContainer: {
+    backgroundColor: "#ffffff",
+    padding: "20px",
+    borderRadius: "8px",
+    boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)",
+    width: "100%",
+    maxWidth: "400px",
+    textAlign: "left",
+  },
+  formGroup: {
+    marginBottom: "15px",
+  },
+  label: {
+    display: "block",
+    fontSize: "14px",
+    fontWeight: "bold",
+    marginBottom: "5px",
+    color: "#333333",
+  },
+  input: {
+    width: "100%",
+    padding: "10px",
+    fontSize: "14px",
+    border: "1px solid #cccccc",
+    borderRadius: "4px",
+  },
+  button: {
+    width: "100%",
+    padding: "10px 15px",
+    fontSize: "16px",
+    color: "#ffffff",
+    backgroundColor: "#007bff",
+    border: "none",
+    borderRadius: "4px",
+    cursor: "pointer",
+    marginTop: "10px",
+  },
+  errorMessage: {
+    color: "#ff4d4d",
+    fontSize: "14px",
+    marginTop: "20px",
+    textAlign: "left",
+  },
 };
 
 export default ProfileForm;
