@@ -2,6 +2,7 @@ import React from "react";
 import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom"; // Import Navigate
 import { useAuth } from "react-oidc-context";
 import Home from "./components/Home"; // Import the Home component
+import "./styles.css"; // Import the new CSS file
 
 function App() {
   const auth = useAuth();
@@ -15,15 +16,25 @@ function App() {
   };
 
   if (auth.isLoading) {
-    return <div>Loading...</div>;
+    return (
+      <div className="container">
+        <div className="card">
+          <h2 className="heading">Loading...</h2>
+        </div>
+      </div>
+    );
   }
 
   if (auth.error) {
     return (
-      <div>
-        <h2>Something went wrong!</h2>
-        <p>{auth.error.message}</p>
-        <button onClick={() => auth.signinRedirect()}>Try Signing In Again</button>
+      <div className="container">
+        <div className="card">
+          <h2 className="heading">Something went wrong!</h2>
+          <p className="sub-heading">{auth.error.message}</p>
+          <button className="button" onClick={() => auth.signinRedirect()}>
+            Try Signing In Again
+          </button>
+        </div>
       </div>
     );
   }
@@ -37,26 +48,31 @@ function App() {
         {/* Render `/home` */}
         <Route
           path="/home"
-          element={
-            auth.isAuthenticated ? (
-              <Home signoutRedirect={signoutRedirect} />
-            ) : (
-              <div>
-                <h2>Please Sign In</h2>
-                <button onClick={() => auth.signinRedirect()}>Sign in</button>
-              </div>
-            )
-          }
+          element={<Home signoutRedirect={signoutRedirect} />}
         />
 
         {/* Catch-all route for unmatched paths */}
         <Route
           path="*"
           element={
-            <div>
-              <h2>404: Page Not Found</h2>
-              <button onClick={() => auth.signinRedirect()}>Sign In</button>
-              <button onClick={signoutRedirect}>Sign Out</button>
+            <div className="container">
+              <div className="card">
+                <h2 className="heading">404: Page Not Found</h2>
+                <div className="form-group">
+                  <button
+                    className="button"
+                    onClick={() => auth.signinRedirect()}
+                  >
+                    Sign In
+                  </button>
+                  <button
+                    className="button button-secondary"
+                    onClick={signoutRedirect}
+                  >
+                    Sign Out
+                  </button>
+                </div>
+              </div>
             </div>
           }
         />

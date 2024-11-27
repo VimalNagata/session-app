@@ -1,121 +1,151 @@
-/* styles.css */
+/* Global Styles */
 body {
   background-image: url('https://d2gc27jy00o0yk.cloudfront.net/default-assets/image/cognito-image-background-page-dark.svg');
   background-repeat: no-repeat;
   background-size: cover;
   background-position: center;
-  height: 100vh;
   margin: 0;
   font-family: Arial, sans-serif;
-  color: #0e0c0c; /* Ensure text is visible on the dark background */
+  color: #fff; /* Ensure text is visible on the dark background */
 }
 
 /* General Container */
 .container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    background-color: #1a202c; /* Dark background */
-    background-size: cover;
-    color: #fff;
-  }
-  
-  /* Card Styles */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background-color: rgba(26, 32, 44, 0.95); /* Dark overlay for better text contrast */
+  text-align: center;
+}
+
+/* Card Styles */
+.card {
+  background-color: #2d3748; /* Dark card background */
+  padding: 40px;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+  max-width: 400px;
+  width: 100%;
+}
+
+/* Logo */
+.logo {
+  width: 100px;
+  height: auto;
+  margin-bottom: 20px;
+}
+
+/* Typography */
+.heading {
+  font-size: 24px;
+  margin-bottom: 10px;
+  color: #fff;
+}
+
+.sub-heading {
+  font-size: 16px;
+  margin-bottom: 20px;
+  color: #cbd5e0;
+}
+
+/* Forms */
+.form {
+  text-align: left;
+}
+
+.form-group {
+  margin-bottom: 15px;
+}
+
+.label {
+  font-size: 14px;
+  color: #e2e8f0;
+  margin-bottom: 5px;
+  display: block;
+}
+
+.input {
+  width: 100%;
+  padding: 10px;
+  font-size: 14px;
+  border-radius: 5px;
+  border: 1px solid #4a5568;
+  background-color: #2d3748;
+  color: #fff;
+}
+
+/* Buttons */
+.button {
+  width: 100%;
+  padding: 10px;
+  font-size: 16px;
+  color: #fff;
+  background-color: #4a90e2;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.button:hover {
+  background-color: #3b82f6;
+}
+
+.button-secondary {
+  background-color: #718096;
+}
+
+.button-secondary:hover {
+  background-color: #4a5568;
+}
+
+/* Error Message */
+.error-message {
+  margin-top: 20px;
+  padding: 10px;
+  background-color: #e53e3e;
+  color: #fff;
+  border-radius: 5px;
+  text-align: left;
+  font-size: 14px;
+}
+
+/* Radio Buttons */
+.radio-label {
+  display: block;
+  margin: 10px 0;
+  color: #cbd5e0;
+}
+
+.radio {
+  margin-right: 10px;
+}
+
+/* Footer */
+.footer {
+  margin-top: 20px;
+  text-align: center;
+  font-size: 14px;
+  color: #cbd5e0;
+}
+
+/* Media Queries for Responsive Design */
+@media (max-width: 768px) {
   .card {
-    background-color: #2d3748; /* Dark card background */
-    padding: 40px;
-    border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    width: 100%;
-    max-width: 400px;
-    text-align: center;
+    padding: 20px;
   }
-  
-  /* Logo */
-  .logo {
-    width: 80px;
-    margin-bottom: 20px;
-  }
-  
-  /* Headings */
+
   .heading {
-    font-size: 24px;
-    color: #fff;
-  }
-  
-  .sub-heading {
-    font-size: 16px;
-    color: #cbd5e0;
-    margin-bottom: 20px;
-  }
-  
-  /* Form */
-  .form {
-    text-align: left;
-  }
-  
-  .form-heading {
     font-size: 20px;
-    color: #fff;
-    margin-bottom: 20px;
   }
-  
-  .form-group {
-    margin-bottom: 15px;
-  }
-  
-  .label {
+
+  .sub-heading {
     font-size: 14px;
-    color: #e2e8f0;
-    margin-bottom: 5px;
-    display: block;
   }
-  
-  .input {
-    width: 100%;
-    padding: 10px;
-    font-size: 14px;
-    border-radius: 5px;
-    border: 1px solid #4a5568;
-    background-color: #2d3748;
-    color: #fff;
-  }
-  
-  /* Buttons */
+
   .button {
-    width: 100%;
-    padding: 10px;
-    font-size: 16px;
-    color: #fff;
-    background-color: #4a90e2;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-  }
-  
-  .button-secondary {
-    background-color: #718096;
-  }
-  
-  /* Error Message */
-  .error-message {
-    margin-top: 20px;
-    padding: 10px;
-    background-color: #e53e3e;
-    color: #fff;
-    border-radius: 5px;
-    text-align: left;
     font-size: 14px;
+    padding: 8px;
   }
-  
-  /* Radio Buttons */
-  .radio-label {
-    display: block;
-    margin: 10px 0;
-    color: #cbd5e0;
-  }
-  
-  .radio {
-    margin-right: 10px;
-  }
+}

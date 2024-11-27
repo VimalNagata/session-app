@@ -1,23 +1,23 @@
 import React, { useState, useEffect } from "react";
 import { useAuth } from "react-oidc-context";
 import axios from "axios";
-import '../styles.css'; // Import the CSS file
+import "../styles.css"; // Import global CSS
 
 const ProfileForm = () => {
   const auth = useAuth();
   const [role, setRole] = useState("");
   const [formData, setFormData] = useState({});
   const [loading, setLoading] = useState(true);
-  const [errors, setErrors] = useState(null); // State to hold error messages
+  const [errors, setErrors] = useState(null);
 
   useEffect(() => {
     if (auth.user) {
       const userAttributes = auth.user.profile;
       const userRole = userAttributes["custom:role"];
       if (userRole) {
-        setRole(userRole); // Set the role if it exists
+        setRole(userRole);
       }
-      setFormData(userAttributes); // Pre-fill existing attributes
+      setFormData(userAttributes);
       setLoading(false);
     }
   }, [auth.user]);
@@ -35,7 +35,7 @@ const ProfileForm = () => {
           access_token: auth.user.access_token,
           attributes,
         });
-        setErrors(null); // Clear previous errors
+        setErrors(null);
         alert("Role updated successfully! Please complete the profile.");
       } catch (error) {
         console.error("Error updating role:", error);
@@ -54,18 +54,17 @@ const ProfileForm = () => {
 
       if (response.status === 200) {
         const { message } = response.data;
-        setErrors(null); // Clear previous errors
+        setErrors(null);
         alert(`${message}`);
       }
     } catch (error) {
       console.error("Error updating profile:", error);
       if (error.response?.data?.error) {
-        // Parse and format error message
         const errorMessage = error.response.data.error;
         const formattedError = errorMessage
           .split("\n")
           .filter((line) => line.trim() !== "")
-          .map((line, index) => <p key={index}>{line}</p>); // Display as paragraphs
+          .map((line, index) => <p key={index}>{line}</p>);
         setErrors(formattedError);
       } else {
         setErrors(<p>Failed to update profile. Please try again.</p>);
@@ -93,33 +92,37 @@ const ProfileForm = () => {
 
   if (!role) {
     return (
-      <form onSubmit={handleRoleSubmit} className="form-container">
-        <h1 className="heading">Select Your Role</h1>
-        <label className="radio-label">
-          <input
-            type="radio"
-            name="role"
-            value="Teacher"
-            onChange={(e) => setRole(e.target.value)}
-            className="radio"
-          />
-          Teacher
-        </label>
-        <label className="radio-label">
-          <input
-            type="radio"
-            name="role"
-            value="Student"
-            onChange={(e) => setRole(e.target.value)}
-            className="radio"
-          />
-          Student
-        </label>
-        <button className="button" type="submit">
-          Save Role
-        </button>
-        {errors && <div className="error-message">{errors}</div>}
-      </form>
+      <div className="container">
+        <div className="card">
+          <h1 className="heading">Select Your Role</h1>
+          <form onSubmit={handleRoleSubmit} className="form">
+            <label className="radio-label">
+              <input
+                type="radio"
+                name="role"
+                value="Teacher"
+                onChange={(e) => setRole(e.target.value)}
+                className="radio"
+              />
+              Teacher
+            </label>
+            <label className="radio-label">
+              <input
+                type="radio"
+                name="role"
+                value="Student"
+                onChange={(e) => setRole(e.target.value)}
+                className="radio"
+              />
+              Student
+            </label>
+            <button className="button" type="submit">
+              Save Role
+            </button>
+            {errors && <div className="error-message">{errors}</div>}
+          </form>
+        </div>
+      </div>
     );
   }
 
