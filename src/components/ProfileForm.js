@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useAuth } from "react-oidc-context";
 import axios from "axios";
+import './styles.css'; // Import the CSS file
 
 const ProfileForm = () => {
   const auth = useAuth();
@@ -72,7 +73,7 @@ const ProfileForm = () => {
     }
   };
 
-  if (loading) return <div>Loading...</div>;
+  if (loading) return <div className="loading">Loading...</div>;
 
   const teacherFields = [
     { name: "custom:availability", label: "Availability" },
@@ -92,30 +93,32 @@ const ProfileForm = () => {
 
   if (!role) {
     return (
-      <form onSubmit={handleRoleSubmit} style={styles.formContainer}>
-        <h1 style={styles.heading}>Select Your Role</h1>
-        <label>
+      <form onSubmit={handleRoleSubmit} className="form-container">
+        <h1 className="heading">Select Your Role</h1>
+        <label className="radio-label">
           <input
             type="radio"
             name="role"
             value="Teacher"
             onChange={(e) => setRole(e.target.value)}
+            className="radio"
           />
           Teacher
         </label>
-        <label>
+        <label className="radio-label">
           <input
             type="radio"
             name="role"
             value="Student"
             onChange={(e) => setRole(e.target.value)}
+            className="radio"
           />
           Student
         </label>
-        <button style={styles.button} type="submit">
+        <button className="button" type="submit">
           Save Role
         </button>
-        {errors && <div style={styles.errorMessage}>{errors}</div>}
+        {errors && <div className="error-message">{errors}</div>}
       </form>
     );
   }
@@ -123,96 +126,34 @@ const ProfileForm = () => {
   const fieldsToRender = role === "Teacher" ? teacherFields : studentFields;
 
   return (
-    <div style={styles.container}>
-      <h1 style={styles.heading}>Welcome to Sessions Platform</h1>
-      <p style={styles.subHeading}>Hello, {auth.user?.profile.email}</p>
+    <div className="container">
+      <div className="card">
+        <img src="/logo.png" alt="Expert Sessions" className="logo" />
+        <h1 className="heading">Welcome to Sessions Platform</h1>
+        <p className="sub-heading">Hello, {auth.user?.profile.email}</p>
 
-      <div style={styles.formContainer}>
-        <h2 style={styles.heading}>{role} Profile</h2>
-        {fieldsToRender.map((field) => (
-          <div style={styles.formGroup} key={field.name}>
-            <label style={styles.label}>{field.label}:</label>
-            <input
-              type="text"
-              name={field.name}
-              value={formData[field.name] || ""}
-              onChange={handleChange}
-              style={styles.input}
-            />
-          </div>
-        ))}
-        <button style={styles.button} onClick={handleProfileSubmit}>
-          Save Profile
-        </button>
-        {errors && <div style={styles.errorMessage}>{errors}</div>}
+        <form onSubmit={handleProfileSubmit} className="form">
+          <h2 className="form-heading">{role} Profile</h2>
+          {fieldsToRender.map((field) => (
+            <div className="form-group" key={field.name}>
+              <label className="label">{field.label}:</label>
+              <input
+                type="text"
+                name={field.name}
+                value={formData[field.name] || ""}
+                onChange={handleChange}
+                className="input"
+              />
+            </div>
+          ))}
+          <button type="submit" className="button">
+            Save Profile
+          </button>
+        </form>
+        {errors && <div className="error-message">{errors}</div>}
       </div>
     </div>
   );
-};
-
-const styles = {
-  container: {
-    padding: "20px",
-    textAlign: "center",
-    fontFamily: "Arial, sans-serif",
-    backgroundColor: "#f5f5f5",
-    minHeight: "100vh",
-    display: "flex",
-    flexDirection: "column",
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  heading: {
-    fontSize: "24px",
-    marginBottom: "20px",
-  },
-  subHeading: {
-    fontSize: "18px",
-    marginBottom: "40px",
-  },
-  formContainer: {
-    backgroundColor: "#ffffff",
-    padding: "20px",
-    borderRadius: "8px",
-    boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)",
-    width: "100%",
-    maxWidth: "400px",
-    textAlign: "left",
-  },
-  formGroup: {
-    marginBottom: "15px",
-  },
-  label: {
-    display: "block",
-    fontSize: "14px",
-    fontWeight: "bold",
-    marginBottom: "5px",
-    color: "#333333",
-  },
-  input: {
-    width: "100%",
-    padding: "10px",
-    fontSize: "14px",
-    border: "1px solid #cccccc",
-    borderRadius: "4px",
-  },
-  button: {
-    width: "100%",
-    padding: "10px 15px",
-    fontSize: "16px",
-    color: "#ffffff",
-    backgroundColor: "#007bff",
-    border: "none",
-    borderRadius: "4px",
-    cursor: "pointer",
-    marginTop: "10px",
-  },
-  errorMessage: {
-    color: "#ff4d4d",
-    fontSize: "14px",
-    marginTop: "20px",
-    textAlign: "left",
-  },
 };
 
 export default ProfileForm;

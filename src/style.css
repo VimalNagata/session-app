@@ -1,0 +1,112 @@
+/* styles.css */
+
+/* General Container */
+.container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: #1a202c; /* Dark background */
+    background-image: url('/background-pattern.png');
+    background-size: cover;
+    color: #fff;
+  }
+  
+  /* Card Styles */
+  .card {
+    background-color: #2d3748; /* Dark card background */
+    padding: 40px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 400px;
+    text-align: center;
+  }
+  
+  /* Logo */
+  .logo {
+    width: 80px;
+    margin-bottom: 20px;
+  }
+  
+  /* Headings */
+  .heading {
+    font-size: 24px;
+    color: #fff;
+  }
+  
+  .sub-heading {
+    font-size: 16px;
+    color: #cbd5e0;
+    margin-bottom: 20px;
+  }
+  
+  /* Form */
+  .form {
+    text-align: left;
+  }
+  
+  .form-heading {
+    font-size: 20px;
+    color: #fff;
+    margin-bottom: 20px;
+  }
+  
+  .form-group {
+    margin-bottom: 15px;
+  }
+  
+  .label {
+    font-size: 14px;
+    color: #e2e8f0;
+    margin-bottom: 5px;
+    display: block;
+  }
+  
+  .input {
+    width: 100%;
+    padding: 10px;
+    font-size: 14px;
+    border-radius: 5px;
+    border: 1px solid #4a5568;
+    background-color: #2d3748;
+    color: #fff;
+  }
+  
+  /* Buttons */
+  .button {
+    width: 100%;
+    padding: 10px;
+    font-size: 16px;
+    color: #fff;
+    background-color: #4a90e2;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  .button-secondary {
+    background-color: #718096;
+  }
+  
+  /* Error Message */
+  .error-message {
+    margin-top: 20px;
+    padding: 10px;
+    background-color: #e53e3e;
+    color: #fff;
+    border-radius: 5px;
+    text-align: left;
+    font-size: 14px;
+  }
+  
+  /* Radio Buttons */
+  .radio-label {
+    display: block;
+    margin: 10px 0;
+    color: #cbd5e0;
+  }
+  
+  .radio {
+    margin-right: 10px;
+  }
