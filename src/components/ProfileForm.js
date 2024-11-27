@@ -7,6 +7,7 @@ const ProfileForm = () => {
   const [role, setRole] = useState("");
   const [formData, setFormData] = useState({});
   const [loading, setLoading] = useState(true);
+  const [errors, setErrors] = useState(null); // State to hold error messages
 
   useEffect(() => {
     if (auth.user) {
@@ -36,7 +37,7 @@ const ProfileForm = () => {
         alert("Role updated successfully! Please complete the profile.");
       } catch (error) {
         console.error("Error updating role:", error);
-        alert("Failed to update role. Please try again.");
+        setErrors("Failed to update role. Please try again.");
       }
     }
   };
@@ -48,17 +49,25 @@ const ProfileForm = () => {
         access_token: auth.user.access_token,
         attributes: formData,
       });
-  
+
       if (response.status === 200) {
-        const { message, details } = response.data;
-        console.log("Profile update details:", details);
-        alert(`${message}\nDetails: ${JSON.stringify(details, null, 2)}`);
-      } else {
-        alert("Profile updated but response indicates a possible issue.");
+        const { message } = response.data;
+        setErrors(null); // Clear previous errors
+        alert(`${message}`);
       }
     } catch (error) {
       console.error("Error updating profile:", error);
-      alert("Failed to update profile. Please try again.");
+      if (error.response?.data?.error) {
+        // Parse and format error message
+        const errorMessage = error.response.data.error;
+        const formattedError = errorMessage
+          .split("\n")
+          .filter((line) => line.trim() !== "")
+          .join("<br />"); // Format error with line breaks
+        setErrors(formattedError);
+      } else {
+        setErrors("Failed to update profile. Please try again.");
+      }
     }
   };
 
@@ -103,6 +112,7 @@ const ProfileForm = () => {
           Student
         </label>
         <button type="submit">Save Role</button>
+        {errors && <div style={{ color: "red" }}>{errors}</div>}
       </form>
     );
   }
@@ -124,6 +134,18 @@ const ProfileForm = () => {
         </div>
       ))}
       <button type="submit">Save Profile</button>
+      {errors && (
+        <div
+          style={{
+            color: "red",
+            marginTop: "20px",
+            textAlign: "left",
+            whiteSpace: "pre-wrap",
+          }}
+        >
+          {errors}
+        </div>
+      )}
     </form>
   );
 };
