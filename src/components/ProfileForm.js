@@ -100,8 +100,9 @@ const ProfileForm = () => {
   if (!role) {
     return (
       <>
-        <Header />
+        
         <div className="container">
+        <Header />
           <div className="card">
             <h1 className="heading">Select Your Role</h1>
             <form onSubmit={handleRoleSubmit} className="form">
