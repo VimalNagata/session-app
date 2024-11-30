@@ -19,7 +19,7 @@ const Header = () => {
       {/* Logo */}
       <Link to="/" className="header-logo">
         <img
-          src="/logo.png" // Replace with your logo path
+          src="/logo.jpeg" // Replace with your logo path
           alt="Expert Sessions Logo"
           className="header-logo-image"
         />

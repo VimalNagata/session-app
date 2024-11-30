@@ -144,9 +144,9 @@ const ProfileForm = () => {
 
   return (
     <>
-      <Header />
       <div className="container">
         <div className="card">
+        <Header />
           <h1 className="heading">Welcome to Sessions Platform</h1>
           <p className="sub-heading">Hello, {auth.user?.profile.email}</p>
 

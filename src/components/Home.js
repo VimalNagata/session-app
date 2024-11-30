@@ -34,14 +34,9 @@ const Home = () => {
     // Pre-authenticated home page
     return (
       <div className="container">
-        <Header />
+        
         <div className="card">
-          <img
-            src="/logo.jpeg" // Replace with your logo path
-            alt="Expert Sessions Logo"
-            className="logo"
-          />
-          <h1 className="heading">Expert Sessions</h1>
+        <Header />
           <p>
             Welcome to Expert Sessions – a platform designed to connect you with
             experts across various domains. Whether you're a student looking for
