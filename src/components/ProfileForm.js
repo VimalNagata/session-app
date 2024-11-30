@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useAuth } from "react-oidc-context";
 import axios from "axios";
+import Header from "./Header";
 import "../styles.css"; // Import global CSS
 
 const ProfileForm = () => {
@@ -29,6 +30,7 @@ const ProfileForm = () => {
   const handleRoleSubmit = async (e) => {
     e.preventDefault();
     if (role) {
+      setLoading(true);
       try {
         const attributes = { "custom:role": role };
         await axios.post("https://sessions.red/update-profile", {
@@ -40,12 +42,15 @@ const ProfileForm = () => {
       } catch (error) {
         console.error("Error updating role:", error);
         setErrors("Failed to update role. Please try again.");
+      } finally {
+        setLoading(false);
       }
     }
   };
 
   const handleProfileSubmit = async (e) => {
     e.preventDefault();
+    setLoading(true);
     try {
       const response = await axios.post("https://sessions.red/update-profile", {
         access_token: auth.user.access_token,
@@ -69,6 +74,8 @@ const ProfileForm = () => {
       } else {
         setErrors(<p>Failed to update profile. Please try again.</p>);
       }
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -92,70 +99,83 @@ const ProfileForm = () => {
 
   if (!role) {
     return (
-      <div className="container">
-        <div className="card">
-          <h1 className="heading">Select Your Role</h1>
-          <form onSubmit={handleRoleSubmit} className="form">
-            <label className="radio-label">
-              <input
-                type="radio"
-                name="role"
-                value="Teacher"
-                onChange={(e) => setRole(e.target.value)}
-                className="radio"
-              />
-              Teacher
-            </label>
-            <label className="radio-label">
-              <input
-                type="radio"
-                name="role"
-                value="Student"
-                onChange={(e) => setRole(e.target.value)}
-                className="radio"
-              />
-              Student
-            </label>
-            <button className="button" type="submit">
-              Save Role
-            </button>
-            {errors && <div className="error-message">{errors}</div>}
-          </form>
+      <>
+        <Header />
+        <div className="container">
+          <div className="card">
+            <h1 className="heading">Select Your Role</h1>
+            <form onSubmit={handleRoleSubmit} className="form">
+              <label className="radio-label">
+                <input
+                  type="radio"
+                  name="role"
+                  value="Teacher"
+                  onChange={(e) => setRole(e.target.value)}
+                  className="radio"
+                />
+                Teacher
+              </label>
+              <label className="radio-label">
+                <input
+                  type="radio"
+                  name="role"
+                  value="Student"
+                  onChange={(e) => setRole(e.target.value)}
+                  className="radio"
+                />
+                Student
+              </label>
+              <button
+                className="button"
+                type="submit"
+                disabled={loading}
+              >
+                Save Role
+              </button>
+              {errors && <div className="error-message">{errors}</div>}
+            </form>
+          </div>
         </div>
-      </div>
+      </>
     );
   }
 
   const fieldsToRender = role === "Teacher" ? teacherFields : studentFields;
 
   return (
-    <div className="container">
-      <div className="card">
-        <img src="/logo.png" alt="Expert Sessions" className="logo" />
-        <h1 className="heading">Welcome to Sessions Platform</h1>
-        <p className="sub-heading">Hello, {auth.user?.profile.email}</p>
+    <>
+      <Header />
+      <div className="container">
+        <div className="card">
+          <h1 className="heading">Welcome to Sessions Platform</h1>
+          <p className="sub-heading">Hello, {auth.user?.profile.email}</p>
 
-        <form onSubmit={handleProfileSubmit} className="form">
-          <h2 className="form-heading">{role} Profile</h2>
-          {fieldsToRender.map((field) => (
-            <div className="form-group" key={field.name}>
-              <label className="label">{field.label}:</label>
-              <input
-                type="text"
-                name={field.name}
-                value={formData[field.name] || ""}
-                onChange={handleChange}
-                className="input"
-              />
-            </div>
-          ))}
-          <button type="submit" className="button">
-            Save Profile
-          </button>
-        </form>
-        {errors && <div className="error-message">{errors}</div>}
+          <form onSubmit={handleProfileSubmit} className="form">
+            <h2 className="form-heading">{role} Profile</h2>
+            {fieldsToRender.map((field) => (
+              <div className="form-group" key={field.name}>
+                <label className="label">{field.label}:</label>
+                <input
+                  type="text"
+                  name={field.name}
+                  value={formData[field.name] || ""}
+                  onChange={handleChange}
+                  className="input"
+                />
+              </div>
+            ))}
+            <button
+              type="submit"
+              className="button"
+              disabled={loading}
+            >
+              Save Profile
+            </button>
+          </form>
+          {errors && <div className="error-message">{errors}</div>}
+        </div>
       </div>
-    </div>
+    </>
   );
 };
 

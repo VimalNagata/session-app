@@ -3,6 +3,7 @@ import { useAuth } from "react-oidc-context";
 import Services from "./Services";
 import Bookings from "./Bookings";
 import ProfileForm from "./ProfileForm";
+import Header from "./Header";
 import "../styles.css"; // Import global CSS
 
 const Home = () => {
@@ -33,6 +34,7 @@ const Home = () => {
     // Pre-authenticated home page
     return (
       <div className="container">
+        <Header />
         <div className="card">
           <img
             src="/logo.jpeg" // Replace with your logo path
@@ -61,12 +63,8 @@ const Home = () => {
   // Authenticated home page
   return (
     <div className="container">
+      <Header />
       <div className="card">
-        <img
-          src="/logo.svg" // Replace with your logo path
-          alt="Expert Sessions Logo"
-          className="logo"
-        />
         <h1 className="heading">Welcome to Expert Sessions</h1>
         <p className="sub-heading">Hello, {auth.user?.profile.email}</p>
 
