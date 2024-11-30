@@ -60,7 +60,7 @@ const Home = () => {
     <div className="container">
       <Header />
       <div className="card">
-        <h1 className="heading">Welcome to Expert Sessions</h1>
+        <h1 className="heading">Welcome to Expert Sessions - h</h1>
         <p className="sub-heading">Hello, {auth.user?.profile.email}</p>
 
         {showProfileForm ? (
