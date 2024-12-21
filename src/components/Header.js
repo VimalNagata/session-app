@@ -16,7 +16,7 @@ const Header = () => {
 
   const signoutRedirect = () => {
     const clientId = "2fpemjqos4302bfaf65g06l8g0"; // Ensure this matches your Cognito App Client ID
-    const logoutUri = "https://sessions.red/home"; // Ensure this matches the sign-out URI configured in Cognito
+    const logoutUri = "https://sessions.red"; // Ensure this matches the sign-out URI configured in Cognito
     const cognitoDomain = "https://auth.sessions.red"; // Your Cognito domain
   
     const logoutURL = `${cognitoDomain}/logout?client_id=${clientId}&logout_uri=${encodeURIComponent(logoutUri)}`;
