@@ -7,11 +7,17 @@ import { FaSignInAlt, FaSignOutAlt, FaUserCircle } from "react-icons/fa"; // Imp
 const Header = () => {
   const auth = useAuth();
 
-  const signoutRedirect = () => {
+  const signoutRedirect_old = () => {
     const clientId = "2fpemjqos4302bfaf65g06l8g0";
     const logoutUri = "https://sessions.red/home";
     const cognitoDomain = "https://auth.sessions.red";
     window.location.href = `${cognitoDomain}/logout?client_id=${clientId}&logout_uri=${encodeURIComponent(logoutUri)}`;
+  };
+
+  const signoutRedirect = () => {
+    auth.signoutRedirect().catch((error) => {
+      console.error("Error during signout:", error);
+    });
   };
 
   return (
