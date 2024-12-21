@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-d
 import { useAuth } from "react-oidc-context";
 import Home from "./components/Home"; // Import the Home component
 import "./styles.css"; // Import the new CSS file
+import Header from "./components/Header";
 
 function App() {
   const auth = useAuth();
