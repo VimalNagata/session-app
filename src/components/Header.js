@@ -15,9 +15,15 @@ const Header = () => {
   };
 
   const signoutRedirect = () => {
-    auth.signoutRedirect().catch((error) => {
-      console.error("Error during signout:", error);
-    });
+    const clientId = "2fpemjqos4302bfaf65g06l8g0"; // Ensure this matches your Cognito App Client ID
+    const logoutUri = "https://sessions.red/home"; // Ensure this matches the sign-out URI configured in Cognito
+    const cognitoDomain = "https://auth.sessions.red"; // Your Cognito domain
+  
+    const logoutURL = `${cognitoDomain}/logout?client_id=${clientId}&logout_uri=${encodeURIComponent(logoutUri)}`;
+    
+    console.log("Logout URL:", logoutURL); // Log the constructed URL for debugging
+  
+    window.location.href = logoutURL;
   };
 
   return (
