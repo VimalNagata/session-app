@@ -39,11 +39,34 @@ function App() {
     );
   }
 
+  if (!auth.isAuthenticated) {
+    // Pre-authenticated home page
+    return (
+      <div className="container">
+        
+        <div className="card">
+        <Header />
+          <p>
+            Welcome to Expert Sessions – a platform designed to connect you with
+            experts across various domains. Whether you're a student looking for
+            teachers to guide you or a patient seeking consultations with
+            specialized doctors, we've got you covered.
+          </p>
+          <p>
+            Our platform allows you to book experts based on their availability
+            and expertise, ensuring you get the right guidance when you need it.
+          </p>
+          <button className="button" onClick={() => auth.signinRedirect()}>
+            Sign In to Explore
+          </button>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <Router>
       <Routes>
-        {/* Redirect `/` to `/home` */}
-        <Route path="/" element={<Navigate to="/home" replace />} />
 
         {/* Render `/home` */}
         <Route
