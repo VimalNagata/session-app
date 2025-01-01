@@ -89,27 +89,9 @@ function App() {
       </div>
     );
   }
-
-  return (
-    <Router>
-      <Routes>
-        <Route path="/profile" element={<ProfileHandler />} />
-        <Route
-          path="*"
-          element={
-            <div className="container">
-              <div className="card">
-                <h2 className="heading">404: Page Not Found</h2>
-                <button className="button" onClick={() => auth.signinRedirect()}>
-                  Go to Sign In
-                </button>
-              </div>
-            </div>
-          }
-        />
-      </Routes>
-    </Router>
-  );
+  else {
+    <ProfileHandler/>
+  }
 }
 
 export default App;
