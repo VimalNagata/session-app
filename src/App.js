@@ -1,8 +1,6 @@
 import React, { useEffect } from "react";
 import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
 import { useAuth } from "react-oidc-context";
-import Home from "./components/Home"; // Import the Home component
-import ProfileForm from "./components/ProfileForm"; // Import the ProfileForm component
 import Header from "./components/Header";
 import "./styles.css";
 
@@ -69,33 +67,6 @@ function App() {
       </div>
     );
   }
-
-  // Check for profile completion
-  const isProfileComplete = !!auth.user?.profile["custom:role"]; // Check for a required field, e.g., `custom:role`
-
-  return (
-    <Router>
-      <Header />
-      <Routes>
-        {/* Redirect to profile completion if profile is incomplete */}
-        {!isProfileComplete && (
-          <Route path="*" element={<Navigate to="/profile" replace />} />
-        )}
-
-        {/* Profile Form Route */}
-        <Route path="/profile" element={<ProfileForm />} />
-
-        {/* Home Route */}
-        <Route path="/home" element={<Home signoutRedirect={signoutRedirect} />} />
-
-        {/* Catch-all for unmatched routes */}
-        <Route
-          path="*"
-          element={<div className="container"><h2>404: Page Not Found</h2></div>}
-        />
-      </Routes>
-    </Router>
-  );
 }
 
 export default App;
