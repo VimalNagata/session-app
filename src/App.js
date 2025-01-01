@@ -3,7 +3,6 @@ import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-d
 import { useAuth } from "react-oidc-context";
 import Header from "./components/Header";
 import ProfileHandler from "./components/ProfileHandler"; // Import ProfileHandler
-import Home from "./components/Home"; // Import Home Component
 import "./styles.css";
 
 function App() {
