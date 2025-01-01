@@ -64,45 +64,6 @@ function App() {
       </div>
     );
   }
-
-  return (
-    <Router>
-      <Routes>
-
-        {/* Render `/home` */}
-        <Route
-          path="/home"
-          element={<Home signoutRedirect={signoutRedirect} />}
-        />
-
-        {/* Catch-all route for unmatched paths */}
-        <Route
-          path="*"
-          element={
-            <div className="container">
-              <div className="card">
-                <h2 className="heading">404: Page Not Found</h2>
-                <div className="form-group">
-                  <button
-                    className="button"
-                    onClick={() => auth.signinRedirect()}
-                  >
-                    Sign In
-                  </button>
-                  <button
-                    className="button button-secondary"
-                    onClick={signoutRedirect}
-                  >
-                    Sign Out
-                  </button>
-                </div>
-              </div>
-            </div>
-          }
-        />
-      </Routes>
-    </Router>
-  );
 }
 
 export default App;
