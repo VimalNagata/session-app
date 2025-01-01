@@ -14,7 +14,7 @@ function App() {
     }
 
     if (auth.isAuthenticated) {
-      ConsoleLogger.log("updating profile....")
+      console.log("updating profile....");
       // On successful authentication, fetch or create the user profile
       fetch("https://15fvg1d1mg.execute-api.us-east-1.amazonaws.com/prod/profiles", {
         method: "POST",
