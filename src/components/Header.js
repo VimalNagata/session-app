@@ -9,7 +9,7 @@ const Header = () => {
 
   const signoutRedirect_old = () => {
     const clientId = "2fpemjqos4302bfaf65g06l8g0";
-    const logoutUri = "https://sessions.red/home";
+    const logoutUri = "https://sessions.red";
     const cognitoDomain = "https://auth.sessions.red";
     window.location.href = `${cognitoDomain}/logout?client_id=${clientId}&logout_uri=${encodeURIComponent(logoutUri)}`;
   };
