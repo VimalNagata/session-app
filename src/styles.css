@@ -206,3 +206,94 @@ body {
     padding: 8px;
   }
 }
+
+
+/* Profile Form Styles */
+.profile-form {
+  background-color: #2d3748; /* Dark background for the form container */
+  color: #ffffff; /* Light text color for readability */
+  padding: 30px;
+  margin: 20px auto;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); /* Subtle shadow for depth */
+  max-width: 500px;
+  width: 100%; /* Responsive width */
+}
+
+.profile-form h2 {
+  text-align: center;
+  font-size: 24px;
+  margin-bottom: 20px;
+  color: #ffffff; /* White for the heading */
+}
+
+.profile-form form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px; /* Space between fields */
+}
+
+.profile-form label {
+  font-size: 16px;
+  color: #e2e8f0;
+  margin-bottom: 5px;
+}
+
+.profile-form input,
+.profile-form select {
+  width: 100%;
+  padding: 10px;
+  font-size: 14px;
+  border-radius: 5px;
+  border: 1px solid #4a5568; /* Subtle border */
+  background-color: #1a202c; /* Darker input background */
+  color: #ffffff;
+  transition: border-color 0.3s ease;
+}
+
+.profile-form input:focus,
+.profile-form select:focus {
+  border-color: #3b82f6; /* Blue border on focus */
+  outline: none;
+}
+
+.profile-form button {
+  padding: 12px;
+  font-size: 16px;
+  font-weight: bold;
+  color: #ffffff;
+  background-color: #4a90e2; /* Blue button background */
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.profile-form button:hover {
+  background-color: #3b82f6; /* Lighter blue on hover */
+}
+
+.profile-form div {
+  display: flex;
+  flex-direction: column;
+}
+
+.profile-form div:last-child {
+  margin-bottom: 0;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .profile-form {
+    padding: 20px;
+  }
+
+  .profile-form h2 {
+    font-size: 20px;
+  }
+
+  .profile-form button {
+    font-size: 14px;
+    padding: 10px;
+  }
+}
