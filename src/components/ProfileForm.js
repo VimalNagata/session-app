@@ -42,7 +42,7 @@ const ProfileForm = () => {
 
   return (
     <div className="profile-form">
-      <h2>Complete Your Profile</h2>
+      <h2>Profile</h2>
       <form onSubmit={handleSubmit}>
         <div>
           <label>Role:</label>
