@@ -2,7 +2,6 @@ import React, { useEffect } from "react";
 import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
 import { useAuth } from "react-oidc-context";
 import Header from "./components/Header";
-import ProfileHandler from "./components/ProfileHandler"; // Import ProfileHandler
 import "./styles.css";
 import ProfileForm from "./components/ProfileForm";
 
