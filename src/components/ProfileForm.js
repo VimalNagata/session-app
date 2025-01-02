@@ -20,7 +20,7 @@ const ProfileForm = () => {
     e.preventDefault();
 
     // Save the profile data
-    fetch("https://your-api-endpoint/profiles", {
+    fetch("https://15fvg1d1mg.execute-api.us-east-1.amazonaws.com/profiles", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
