@@ -4,6 +4,7 @@ import { useAuth } from "react-oidc-context";
 import Header from "./components/Header";
 import ProfileHandler from "./components/ProfileHandler"; // Import ProfileHandler
 import "./styles.css";
+import ProfileForm from "./components/ProfileForm";
 
 function App() {
   const auth = useAuth();
@@ -95,7 +96,7 @@ function App() {
         <div className="card">
           <Header />
           <p>
-            Let's begin
+          <ProfileForm/>
           </p>
         </div>
       </div>
