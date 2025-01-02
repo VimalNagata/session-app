@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import "./styles.css";
 
 const ProfileForm = () => {
   const [role, setRole] = useState(""); // Role: student/teacher
