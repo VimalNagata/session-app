@@ -44,7 +44,7 @@ const ProfileForm = () => {
     <div className="profile-form">
       <h2>Complete Your Profile</h2>
       <form onSubmit={handleSubmit}>
-        <div>
+        <<div className="form-group">
           <label>Role:</label>
           <select name="role" value={role} onChange={(e) => setRole(e.target.value)} required>
             <option value="">Select</option>
@@ -55,7 +55,7 @@ const ProfileForm = () => {
 
         {role === "student" && (
           <>
-            <div>
+            <div className="form-group">
               <label>Age:</label>
               <input
                 type="number"
@@ -65,7 +65,7 @@ const ProfileForm = () => {
                 required
               />
             </div>
-            <div>
+            <div className="form-group">
               <label>Educational Qualification:</label>
               <input
                 type="text"
@@ -75,7 +75,7 @@ const ProfileForm = () => {
                 required
               />
             </div>
-            <div>
+            <div className="form-group">
               <label>Area of Interest:</label>
               <input
                 type="text"
@@ -90,7 +90,7 @@ const ProfileForm = () => {
 
         {role === "teacher" && (
           <>
-            <div>
+            <div className="form-group">
               <label>Qualification:</label>
               <input
                 type="text"
@@ -100,7 +100,7 @@ const ProfileForm = () => {
                 required
               />
             </div>
-            <div>
+            <div className="form-group">
               <label>Expertise:</label>
               <input
                 type="text"
@@ -110,7 +110,7 @@ const ProfileForm = () => {
                 required
               />
             </div>
-            <div>
+            <div className="form-group">
               <label>Years of Experience:</label>
               <input
                 type="number"
