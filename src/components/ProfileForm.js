@@ -44,7 +44,7 @@ const ProfileForm = () => {
     <div className="profile-form">
       <h2>Complete Your Profile</h2>
       <form onSubmit={handleSubmit}>
-        <<div className="form-group">
+        <div className="form-group">
           <label>Role:</label>
           <select name="role" value={role} onChange={(e) => setRole(e.target.value)} required>
             <option value="">Select</option>
