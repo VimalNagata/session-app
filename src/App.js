@@ -90,7 +90,17 @@ function App() {
     );
   }
   else {
-    <ProfileHandler/>
+    return (
+      <div className="container">
+        <div className="card">
+          <Header />
+          <p>
+            Let's begin
+          </p>
+        </div>
+      </div>
+    )
+    
   }
 }
 
