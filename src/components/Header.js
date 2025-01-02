@@ -7,23 +7,22 @@ import { FaSignInAlt, FaSignOutAlt, FaUserCircle } from "react-icons/fa"; // Imp
 const Header = () => {
   const auth = useAuth();
 
-  const signoutRedirect_old = () => {
-    const clientId = "2fpemjqos4302bfaf65g06l8g0";
-    const logoutUri = "https://sessions.red";
-    const cognitoDomain = "https://auth.sessions.red";
-    window.location.href = `${cognitoDomain}/logout?client_id=${clientId}&logout_uri=${encodeURIComponent(logoutUri)}`;
-  };
-
-  const signoutRedirect = () => {
+  const signoutRedirect = async () => {
     const clientId = "2fpemjqos4302bfaf65g06l8g0"; // Ensure this matches your Cognito App Client ID
     const logoutUri = "https://sessions.red"; // Ensure this matches the sign-out URI configured in Cognito
     const cognitoDomain = "https://auth.sessions.red"; // Your Cognito domain
-  
+
     const logoutURL = `${cognitoDomain}/logout?client_id=${clientId}&logout_uri=${encodeURIComponent(logoutUri)}`;
-    
+
     console.log("Logout URL:", logoutURL); // Log the constructed URL for debugging
-  
-    window.location.href = logoutURL;
+
+    // Perform the signout
+    try {
+      await auth.signoutRedirect(); // Update auth state in context
+      window.location.href = logoutURL; // Redirect to Cognito logout
+    } catch (error) {
+      console.error("Error during signout:", error);
+    }
   };
 
   return (
