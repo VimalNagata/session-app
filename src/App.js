@@ -7,58 +7,61 @@ import Services from "./components/Services";
 import Bookings from "./components/Bookings";
 import "./styles.css";
 
-const renderContent = () => {
-  // If no profile exists, prompt the user to fill the profile form
-  if (!profile) {
-      return (
-          <div className="container">
-              <div className="card">
-                  <Header />
-                  <ProfileForm saveUserProfile={saveUserProfile} />
-              </div>
-          </div>
-      );
-  }
 
-  // Redirect based on the user's role
-  switch (profile.role) {
-      case "teacher":
-          return (
-              <div className="container">
-                  <div className="card">
-                      <Header />
-                      <Services />
-                  </div>
-              </div>
-          );
-
-      case "student":
-          return (
-              <div className="container">
-                  <div className="card">
-                      <Header />
-                      <Bookings />
-                  </div>
-              </div>
-          );
-
-      default:
-          return (
-              <div className="container">
-                  <div className="card">
-                      <Header />
-                      <p>Invalid Profile Data. Please update your profile.</p>
-                  </div>
-              </div>
-          );
-  }
-};
 
 
 function App() {
     const auth = useAuth();
-    const [profile, setProfile] = useState(null);
+
     const [loadingProfile, setLoadingProfile] = useState(true);
+    const [profile, setProfile] = useState(null);
+
+    const renderContent = () => {
+      // If no profile exists, prompt the user to fill the profile form
+      if (!profile) {
+          return (
+              <div className="container">
+                  <div className="card">
+                      <Header />
+                      <ProfileForm saveUserProfile={saveUserProfile} />
+                  </div>
+              </div>
+          );
+      }
+
+      // Redirect based on the user's role
+      switch (profile.role) {
+          case "teacher":
+              return (
+                  <div className="container">
+                      <div className="card">
+                          <Header />
+                          <Services />
+                      </div>
+                  </div>
+              );
+
+          case "student":
+              return (
+                  <div className="container">
+                      <div className="card">
+                          <Header />
+                          <Bookings />
+                      </div>
+                  </div>
+              );
+
+          default:
+              return (
+                  <div className="container">
+                      <div className="card">
+                          <Header />
+                          <p>Invalid Profile Data. Please update your profile.</p>
+                      </div>
+                  </div>
+              );
+      }
+    };
 
     useEffect(() => {
       const fetchUserProfile = async () => {
