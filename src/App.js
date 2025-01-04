@@ -120,6 +120,7 @@ function App() {
             </div>
         );
     }
+    
 
     // Redirect based on the user's role
     if (profile.role === "teacher") {
