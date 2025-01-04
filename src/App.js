@@ -7,6 +7,54 @@ import Services from "./components/Services";
 import Bookings from "./components/Bookings";
 import "./styles.css";
 
+const renderContent = () => {
+  // If no profile exists, prompt the user to fill the profile form
+  if (!profile) {
+      return (
+          <div className="container">
+              <div className="card">
+                  <Header />
+                  <ProfileForm saveUserProfile={saveUserProfile} />
+              </div>
+          </div>
+      );
+  }
+
+  // Redirect based on the user's role
+  switch (profile.role) {
+      case "teacher":
+          return (
+              <div className="container">
+                  <div className="card">
+                      <Header />
+                      <Services />
+                  </div>
+              </div>
+          );
+
+      case "student":
+          return (
+              <div className="container">
+                  <div className="card">
+                      <Header />
+                      <Bookings />
+                  </div>
+              </div>
+          );
+
+      default:
+          return (
+              <div className="container">
+                  <div className="card">
+                      <Header />
+                      <p>Invalid Profile Data. Please update your profile.</p>
+                  </div>
+              </div>
+          );
+  }
+};
+
+
 function App() {
     const auth = useAuth();
     const [profile, setProfile] = useState(null);
@@ -42,7 +90,7 @@ function App() {
       };
       
       fetchUserProfile();
-      
+
     }, [auth.isAuthenticated]);
 
     const saveUserProfile = async (profileData) => {
@@ -113,37 +161,7 @@ function App() {
         );
     }
 
-
-
-    // If profile doesn't exist, prompt the user to fill the profile form
-    if (!profile) {
-        return (
-            <div className="container">
-              <div className="card">
-                <Header />
-                
-                    <ProfileForm saveUserProfile={saveUserProfile} />
-              </div>
-            </div>
-        );
-    }
-
-
-    // Redirect based on the user's role
-    if (profile.role === "teacher") {
-        return <Services />;
-    } else if (profile.role === "student") {
-        return <Bookings />;
-    }
-
-    return (
-        <div className="container">
-            <Header />
-            <div className="card">
-                <p>Invalid Profile Data</p>
-            </div>
-        </div>
-    );
+    return renderContent();
 }
 
 export default App;
