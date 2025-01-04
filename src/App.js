@@ -68,6 +68,23 @@ function App() {
         }
     };
 
+    if (!auth.isAuthenticated) {
+      return (
+          <div className="container">
+              <Header />
+              <div className="card">
+                  <p>
+                      Welcome to Expert Sessions – a platform designed to connect you with
+                      experts across various domains.
+                  </p>
+                  <button className="button" onClick={() => auth.signinRedirect()}>
+                      Sign In to Explore
+                  </button>
+              </div>
+          </div>
+      );
+    }
+
     if (auth.isLoading || loadingProfile) {
         return (
             <div className="container">
@@ -92,22 +109,7 @@ function App() {
         );
     }
 
-    if (!auth.isAuthenticated) {
-        return (
-            <div className="container">
-                <Header />
-                <div className="card">
-                    <p>
-                        Welcome to Expert Sessions – a platform designed to connect you with
-                        experts across various domains.
-                    </p>
-                    <button className="button" onClick={() => auth.signinRedirect()}>
-                        Sign In to Explore
-                    </button>
-                </div>
-            </div>
-        );
-    }
+
 
     // If profile doesn't exist, prompt the user to fill the profile form
     if (!profile) {
@@ -120,7 +122,7 @@ function App() {
             </div>
         );
     }
-    
+
 
     // Redirect based on the user's role
     if (profile.role === "teacher") {
