@@ -13,32 +13,36 @@ function App() {
     const [loadingProfile, setLoadingProfile] = useState(true);
 
     useEffect(() => {
-        const fetchUserProfile = async () => {
-            if (auth.isAuthenticated) {
-                try {
-                    const response = await fetch("https://15fvg1d1mg.execute-api.us-east-1.amazonaws.com/prod/profiles", {
+      const fetchUserProfile = async () => {
+        if (auth.isAuthenticated) {
+            try {
+                const userId = auth.user.profile.sub; // Ensure this exists
+                const response = await fetch(
+                    `https://15fvg1d1mg.execute-api.us-east-1.amazonaws.com/prod/profiles?user_id=${userId}`, 
+                    {
                         method: "GET",
                         headers: {
                             "Content-Type": "application/json",
                             "Authorization": `Bearer ${auth.user.access_token}`
                         }
-                    });
-                    const data = await response.json();
-
-                    if (response.ok && data.user_id) {
-                        setProfile(data);
-                    } else {
-                        setProfile(null);  // No profile found, trigger profile form
                     }
-                } catch (error) {
-                    console.error("Error fetching profile:", error);
-                } finally {
-                    setLoadingProfile(false);
+                );
+                const data = await response.json();
+                if (response.ok && data.profile) {
+                    setProfile(data.profile);
+                } else {
+                    setProfile(null);  // No profile found, trigger profile form
                 }
+            } catch (error) {
+                console.error("Error fetching profile:", error);
+            } finally {
+                setLoadingProfile(false);
             }
-        };
-
-        fetchUserProfile();
+        }
+      };
+      
+      fetchUserProfile();
+      
     }, [auth.isAuthenticated]);
 
     const saveUserProfile = async (profileData) => {
