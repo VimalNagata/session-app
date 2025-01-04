@@ -71,16 +71,16 @@ function App() {
     if (!auth.isAuthenticated) {
       return (
           <div className="container">
+            <div className="card">
               <Header />
-              <div className="card">
-                  <p>
-                      Welcome to Expert Sessions – a platform designed to connect you with
-                      experts across various domains.
-                  </p>
-                  <button className="button" onClick={() => auth.signinRedirect()}>
-                      Sign In to Explore
-                  </button>
-              </div>
+                <p>
+                    Welcome to Expert Sessions – a platform designed to connect you with
+                    experts across various domains.
+                </p>
+                <button className="button" onClick={() => auth.signinRedirect()}>
+                    Sign In to Explore
+                </button>
+            </div>
           </div>
       );
     }
@@ -115,10 +115,11 @@ function App() {
     if (!profile) {
         return (
             <div className="container">
+              <div className="card">
                 <Header />
-                <div className="card">
+                
                     <ProfileForm saveUserProfile={saveUserProfile} />
-                </div>
+              </div>
             </div>
         );
     }
