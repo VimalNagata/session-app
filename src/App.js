@@ -68,6 +68,7 @@ function App() {
           return (
               <div className="container">
                   <div className="card">
+                      {renderHeader()}
                       <ProfileForm saveUserProfile={saveUserProfile} />
                   </div>
               </div>
@@ -80,6 +81,7 @@ function App() {
               return (
                   <div className="container">
                       <div className="card">
+                          {renderHeader()}
                           <Services />
                       </div>
                   </div>
@@ -89,6 +91,7 @@ function App() {
               return (
                   <div className="container">
                       <div className="card">
+                          {renderHeader()}
                           <Bookings />
                       </div>
                   </div>
@@ -98,6 +101,7 @@ function App() {
               return (
                   <div className="container">
                       <div className="card">
+                          {renderHeader()}
                           <p>Invalid Profile Data. Please update your profile.</p>
                       </div>
                   </div>
@@ -206,7 +210,7 @@ function App() {
         );
     }
 
-    return renderHeader() + renderContent();
+    return renderContent();
 }
 
 export default App;
