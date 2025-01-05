@@ -6,6 +6,7 @@ import ProfileForm from "./components/ProfileForm";
 import Services from "./components/Services";
 import Bookings from "./components/Bookings";
 import "./styles.css";
+import { render } from "@testing-library/react";
 
 function App() {
     const auth = useAuth();
@@ -13,13 +14,38 @@ function App() {
     const [loadingProfile, setLoadingProfile] = useState(true);
     const [profile, setProfile] = useState(null);
 
+    const renderHeader = () => (
+      <header className="header">
+          <Link to="/" className="header-logo">
+              <img src="/logo.jpeg" alt="Expert Sessions Logo" className="header-logo-image" />
+              <span className="header-title">Expert Sessions</span>
+          </Link>
+          <nav className="header-nav">
+              {!auth.isAuthenticated ? (
+                  <button className="header-link" onClick={() => auth.signinRedirect()}>
+                      <FaSignInAlt className="header-icon" /> Sign In
+                  </button>
+              ) : (
+                  <>
+                      <Link to="/profile" className="header-link">
+                          <FaUserCircle className="header-icon" /> Profile
+                      </Link>
+                      <button className="header-link" onClick={signoutRedirect}>
+                          <FaSignOutAlt className="header-icon" /> Sign Out
+                      </button>
+                  </>
+              )}
+          </nav>
+      </header>
+    );
+
     const renderContent = () => {
+      
       // If no profile exists, prompt the user to fill the profile form
       if (!profile) {
           return (
               <div className="container">
                   <div className="card">
-                      <Header />
                       <ProfileForm saveUserProfile={saveUserProfile} />
                   </div>
               </div>
@@ -32,7 +58,6 @@ function App() {
               return (
                   <div className="container">
                       <div className="card">
-                          <Header />
                           <Services />
                       </div>
                   </div>
@@ -42,7 +67,6 @@ function App() {
               return (
                   <div className="container">
                       <div className="card">
-                          <Header />
                           <Bookings />
                       </div>
                   </div>
@@ -52,7 +76,6 @@ function App() {
               return (
                   <div className="container">
                       <div className="card">
-                          <Header />
                           <p>Invalid Profile Data. Please update your profile.</p>
                       </div>
                   </div>
@@ -124,7 +147,7 @@ function App() {
       return (
           <div className="container">
             <div className="card">
-              <Header />
+              {renderHeader()}
                 <p>
                     Welcome to Expert Sessions – a platform designed to connect you with
                     experts across various domains.
@@ -161,7 +184,7 @@ function App() {
         );
     }
 
-    return renderContent();
+    return renderHeader() + renderContent();
 }
 
 export default App;
