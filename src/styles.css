@@ -20,7 +20,7 @@ body {
 }
 .containerFlex {
   display: flex;
-  justify-content: left;
+  justify-content: center;
   align-items: center;
   min-height: 100vh;
   background-color: rgba(26, 32, 44, 0.95); /* Dark overlay for better text contrast */

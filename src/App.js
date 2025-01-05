@@ -190,17 +190,6 @@ function App() {
                     Sign In to Explore
                 </button>
             </div>
-
-            <div className="card" >
-              
-              <p>
-                  Welcome to Expert Sessions – a platform designed to connect you with
-                  experts across various domains.
-              </p>
-              <button className="button" onClick={() => auth.signinRedirect()}>
-                  Sign In to Explore
-              </button>
-          </div>
             
           </div>
           </div>
