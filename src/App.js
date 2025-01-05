@@ -65,7 +65,7 @@ function App() {
       if (!profile || showProfileForm) {
         return (
           <div>{renderHeader()}
-            <div className="container">
+            <div className="containerFlex">
                 <div className="card">
                     
                     <ProfileForm saveUserProfile={saveUserProfile} profile={profile} />
@@ -80,9 +80,8 @@ function App() {
           case "teacher":
               return (
                 <div>{renderHeader()}
-                  <div className="container">
+                  <div className="containerLeft">
                       <div className="card">
-                          
                           <Services />
                       </div>
                   </div>
@@ -92,7 +91,7 @@ function App() {
           case "student":
               return (
                 <div>{renderHeader()}
-                  <div className="container">
+                  <div className="containerLeft">
                       <div className="card">
                           
                           <Bookings />
@@ -179,7 +178,7 @@ function App() {
     if (!auth.isAuthenticated) {
       return (
           <div>{renderHeader()}
-          <div className="container" >
+          <div className="containerFlex" >
             
             <div className="card" >
               
@@ -191,6 +190,17 @@ function App() {
                     Sign In to Explore
                 </button>
             </div>
+
+            <div className="card" >
+              
+              <p>
+                  Welcome to Expert Sessions – a platform designed to connect you with
+                  experts across various domains.
+              </p>
+              <button className="button" onClick={() => auth.signinRedirect()}>
+                  Sign In to Explore
+              </button>
+          </div>
             
           </div>
           </div>
@@ -199,7 +209,7 @@ function App() {
 
     if (auth.isLoading || loadingProfile) {
         return (
-            <div className="container">
+            <div className="containerFlex">
                 <div className="card">
                     <h2 className="heading">Loading...</h2>
                 </div>
@@ -209,7 +219,7 @@ function App() {
 
     if (auth.error) {
         return (
-            <div className="container">
+            <div className="containerFlex">
                 <div className="card">
                     <h2 className="heading">Something went wrong!</h2>
                     <p className="sub-heading">{auth.error.message}</p>
