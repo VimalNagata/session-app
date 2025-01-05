@@ -62,27 +62,15 @@ function App() {
     );
 
     const renderContent = () => {
-      if (showProfileForm) {
+      if (!profile || showProfileForm) {
         return (
             <div className="container">
                 <div className="card">
                     {renderHeader()}
-                    <ProfileForm saveUserProfile={saveUserProfile} />
+                    <ProfileForm saveUserProfile={saveUserProfile} profile={profile} />
                 </div>
             </div>
         );
-      }
-      
-      // If no profile exists, prompt the user to fill the profile form
-      if (!profile) {
-          return (
-              <div className="container">
-                  <div className="card">
-                      {renderHeader()}
-                      <ProfileForm saveUserProfile={saveUserProfile} />
-                  </div>
-              </div>
-          );
       }
 
       // Redirect based on the user's role
