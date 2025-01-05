@@ -6,13 +6,35 @@ import ProfileForm from "./components/ProfileForm";
 import Services from "./components/Services";
 import Bookings from "./components/Bookings";
 import "./styles.css";
-import { render } from "@testing-library/react";
+import { Link } from "react-router-dom";
+import { FaSignInAlt, FaSignOutAlt, FaUserCircle } from "react-icons/fa"; // Import icons
 
 function App() {
     const auth = useAuth();
 
     const [loadingProfile, setLoadingProfile] = useState(true);
     const [profile, setProfile] = useState(null);
+
+    const signoutRedirect = async () => {
+      const clientId = "2fpemjqos4302bfaf65g06l8g0"; // Cognito App Client ID
+      const logoutUri = "https://sessions.red"; // Post-logout redirect URI
+      const cognitoDomain = "https://auth.sessions.red"; // Cognito domain
+    
+      // Construct the logout URL with the post-logout redirect URI
+      const logoutURL = `${cognitoDomain}/logout?client_id=${clientId}&logout_uri=${encodeURIComponent(logoutUri)}&post_logout_redirect_uri=${encodeURIComponent(logoutUri)}`;
+    
+      console.log("Logout URL:", logoutURL); // Log for debugging
+    
+      try {
+        // Clear local auth state
+        await auth.removeUser(); // Removes the user session from oidc-context
+    
+        // Redirect to Cognito logout endpoint
+        window.location.href = logoutURL;
+      } catch (error) {
+        console.error("Error during signout:", error);
+      }
+    };
 
     const renderHeader = () => (
       <header className="header">
