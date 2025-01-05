@@ -10,15 +10,7 @@ body {
 }
 
 /* General Container */
-.containerLeft {
-  display: flex;
-  justify-content: left;
-  align-items: center;
-  min-height: 100vh;
-  background-color: rgba(26, 32, 44, 0.95); /* Dark overlay for better text contrast */
-  text-align: center;
-}
-.containerFlex {
+.container {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -29,6 +21,7 @@ body {
 
 /* Card Styles */
 .card {
+  
   background-color: #2d3748; /* Dark card background */
   padding: 40px;
   border-radius: 10px;

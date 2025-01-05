@@ -65,7 +65,7 @@ function App() {
       if (!profile || showProfileForm) {
         return (
           <div>{renderHeader()}
-            <div className="containerFlex">
+            <div className="container">
                 <div className="card">
                     
                     <ProfileForm saveUserProfile={saveUserProfile} profile={profile} />
@@ -80,7 +80,7 @@ function App() {
           case "teacher":
               return (
                 <div>{renderHeader()}
-                  <div className="containerLeft">
+                  <div className="container">
                       <div className="card">
                           <Services />
                       </div>
@@ -91,7 +91,7 @@ function App() {
           case "student":
               return (
                 <div>{renderHeader()}
-                  <div className="containerLeft">
+                  <div className="container">
                       <div className="card">
                           
                           <Bookings />
@@ -178,7 +178,7 @@ function App() {
     if (!auth.isAuthenticated) {
       return (
           <div>{renderHeader()}
-          <div className="containerFlex" >
+          <div className="container" >
             
             <div className="card" >
               
@@ -198,7 +198,7 @@ function App() {
 
     if (auth.isLoading || loadingProfile) {
         return (
-            <div className="containerFlex">
+            <div className="container">
                 <div className="card">
                     <h2 className="heading">Loading...</h2>
                 </div>
@@ -208,7 +208,7 @@ function App() {
 
     if (auth.error) {
         return (
-            <div className="containerFlex">
+            <div className="container">
                 <div className="card">
                     <h2 className="heading">Something went wrong!</h2>
                     <p className="sub-heading">{auth.error.message}</p>
