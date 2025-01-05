@@ -171,6 +171,7 @@ function App() {
             if (response.ok) {
                 console.log("Profile successfully created:", result);
                 setProfile(profileData);  // Update the profile state
+                setShowProfileForm(false);
             } else {
                 console.error("Error saving profile:", result);
             }
