@@ -101,7 +101,7 @@ function App() {
               return (
                   <div className="container">
                       <div className="card">
-                          {renderHeader()}
+                          {renderHeader()} 
                           <p>Invalid Profile Data. Please update your profile.</p>
                       </div>
                   </div>
