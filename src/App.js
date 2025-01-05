@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
 import { useAuth } from "react-oidc-context";
-import Header from "./components/Header";
 import ProfileForm from "./components/ProfileForm";
 import Services from "./components/Services";
 import Bookings from "./components/Bookings";
@@ -14,6 +13,7 @@ function App() {
 
     const [loadingProfile, setLoadingProfile] = useState(true);
     const [profile, setProfile] = useState(null);
+    const [showProfileForm, setShowProfileForm] = useState(false); 
 
     const signoutRedirect = async () => {
       const clientId = "2fpemjqos4302bfaf65g06l8g0"; // Cognito App Client ID
@@ -38,10 +38,10 @@ function App() {
 
     const renderHeader = () => (
       <header className="header">
-          <Link to="/" className="header-logo">
+          <div className="header-logo">
               <img src="/logo.jpeg" alt="Expert Sessions Logo" className="header-logo-image" />
               <span className="header-title">Expert Sessions</span>
-          </Link>
+          </div>
           <nav className="header-nav">
               {!auth.isAuthenticated ? (
                   <button className="header-link" onClick={() => auth.signinRedirect()}>
@@ -49,9 +49,9 @@ function App() {
                   </button>
               ) : (
                   <>
-                      <Link to="/profile" className="header-link">
+                      <button className="header-link" onClick={() => setShowProfileForm(true)}>
                           <FaUserCircle className="header-icon" /> Profile
-                      </Link>
+                      </button>
                       <button className="header-link" onClick={signoutRedirect}>
                           <FaSignOutAlt className="header-icon" /> Sign Out
                       </button>
@@ -62,6 +62,16 @@ function App() {
     );
 
     const renderContent = () => {
+      if (showProfileForm) {
+        return (
+            <div className="container">
+                <div className="card">
+                    {renderHeader()}
+                    <ProfileForm saveUserProfile={saveUserProfile} />
+                </div>
+            </div>
+        );
+      }
       
       // If no profile exists, prompt the user to fill the profile form
       if (!profile) {
