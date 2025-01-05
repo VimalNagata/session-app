@@ -64,11 +64,13 @@ function App() {
     const renderContent = () => {
       if (!profile || showProfileForm) {
         return (
+          <div>{renderHeader()}
             <div className="container">
                 <div className="card">
-                    {renderHeader()}
+                    
                     <ProfileForm saveUserProfile={saveUserProfile} profile={profile} />
                 </div>
+            </div>
             </div>
         );
       }
@@ -77,31 +79,37 @@ function App() {
       switch (profile.role) {
           case "teacher":
               return (
+                <div>{renderHeader()}
                   <div className="container">
                       <div className="card">
-                          {renderHeader()}
+                          
                           <Services />
                       </div>
+                  </div>
                   </div>
               );
 
           case "student":
               return (
+                <div>{renderHeader()}
                   <div className="container">
                       <div className="card">
-                          {renderHeader()}
+                          
                           <Bookings />
                       </div>
+                  </div>
                   </div>
               );
 
           default:
               return (
+                <div>{renderHeader()}
                   <div className="container">
                       <div className="card">
-                          {renderHeader()} 
+                          
                           <p>Invalid Profile Data. Please update your profile.</p>
                       </div>
+                  </div>
                   </div>
               );
       }
@@ -170,9 +178,11 @@ function App() {
 
     if (!auth.isAuthenticated) {
       return (
-          <div className="container">
-            <div className="card">
-              {renderHeader()}
+          <div>{renderHeader()}
+          <div className="container" >
+            
+            <div className="card" >
+              
                 <p>
                     Welcome to Expert Sessions – a platform designed to connect you with
                     experts across various domains.
@@ -181,6 +191,8 @@ function App() {
                     Sign In to Explore
                 </button>
             </div>
+            
+          </div>
           </div>
       );
     }
