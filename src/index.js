@@ -1,27 +1,23 @@
-import React from "react";
-import ReactDOM from "react-dom/client"; // Correct ReactDOM import for React 18
-import { BrowserRouter as Router } from "react-router-dom"; // Import BrowserRouter
-import { AuthProvider } from "react-oidc-context"; // Import AuthProvider
-import App from "./App"; // Import your main App component
+import React from 'react';
+import ReactDOM from 'react-dom/client';
+import { BrowserRouter } from 'react-router-dom';
+import { AuthProvider } from 'react-oidc-context';
+import App from './App';
 
-// Cognito authentication configuration
-const cognitoAuthConfig = {
-  authority: "https://cognito-idp.us-east-1.amazonaws.com/us-east-1_MYgj1LsPS",
+const authConfig = {
+  authority: "https://auth.sessions.red",
   client_id: "2fpemjqos4302bfaf65g06l8g0",
-  redirect_uri: "https://sessions.red", // Ensure this matches the callback URL in Cognito
-  response_type: "code",
-  scope: "email openid phone profile aws.cognito.signin.user.admin", // Include the necessary admin scope
+  redirect_uri: "https://sessions.red",
+  scope: "openid profile email",
 };
 
-const root = ReactDOM.createRoot(document.getElementById("root"));
-
-// Wrap the application with AuthProvider and BrowserRouter
+const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-    <AuthProvider {...cognitoAuthConfig}>
-      <Router>
+    <AuthProvider {...authConfig}>
+      <BrowserRouter>
         <App />
-      </Router>
+      </BrowserRouter>
     </AuthProvider>
   </React.StrictMode>
 );
