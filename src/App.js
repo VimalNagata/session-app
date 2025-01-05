@@ -1,75 +1,24 @@
 import React, { useEffect, useState } from "react";
-import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route, Navigate, Link } from "react-router-dom";
 import { useAuth } from "react-oidc-context";
-import Header from "./components/Header";
 import ProfileForm from "./components/ProfileForm";
 import Services from "./components/Services";
 import Bookings from "./components/Bookings";
 import "./styles.css";
+import { FaSignInAlt, FaSignOutAlt, FaUserCircle } from "react-icons/fa"; // Import icons
 
-
-
-
-function App() {
+const App = () => {
     const auth = useAuth();
-
     const [loadingProfile, setLoadingProfile] = useState(true);
     const [profile, setProfile] = useState(null);
 
-    const renderContent = () => {
-      // If no profile exists, prompt the user to fill the profile form
-      if (!profile) {
-          return (
-              <div className="container">
-                  <div className="card">
-                      <Header />
-                      <ProfileForm saveUserProfile={saveUserProfile} />
-                  </div>
-              </div>
-          );
-      }
-
-      // Redirect based on the user's role
-      switch (profile.role) {
-          case "teacher":
-              return (
-                  <div className="container">
-                      <div className="card">
-                          <Header />
-                          <Services />
-                      </div>
-                  </div>
-              );
-
-          case "student":
-              return (
-                  <div className="container">
-                      <div className="card">
-                          <Header />
-                          <Bookings />
-                      </div>
-                  </div>
-              );
-
-          default:
-              return (
-                  <div className="container">
-                      <div className="card">
-                          <Header />
-                          <p>Invalid Profile Data. Please update your profile.</p>
-                      </div>
-                  </div>
-              );
-      }
-    };
-
-    useEffect(() => {
-      const fetchUserProfile = async () => {
+    // Fetches user profile from the API Gateway
+    const fetchUserProfile = async () => {
         if (auth.isAuthenticated) {
             try {
-                const userId = auth.user.profile.sub; // Ensure this exists
+                const userId = auth.user.profile.sub;
                 const response = await fetch(
-                    `https://15fvg1d1mg.execute-api.us-east-1.amazonaws.com/prod/profiles?user_id=${userId}`, 
+                    `https://15fvg1d1mg.execute-api.us-east-1.amazonaws.com/prod/profiles?user_id=${userId}`,
                     {
                         method: "GET",
                         headers: {
@@ -78,11 +27,12 @@ function App() {
                         }
                     }
                 );
+
                 const data = await response.json();
                 if (response.ok && data.profile) {
                     setProfile(data.profile);
                 } else {
-                    setProfile(null);  // No profile found, trigger profile form
+                    setProfile(null);
                 }
             } catch (error) {
                 console.error("Error fetching profile:", error);
@@ -90,31 +40,31 @@ function App() {
                 setLoadingProfile(false);
             }
         }
-      };
-      
-      fetchUserProfile();
+    };
 
-    }, [auth.isAuthenticated]);
-
+    // Saves user profile to the API Gateway
     const saveUserProfile = async (profileData) => {
         try {
-            const response = await fetch("https://15fvg1d1mg.execute-api.us-east-1.amazonaws.com/prod/profiles", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                    "Authorization": `Bearer ${auth.user.access_token}`
-                },
-                body: JSON.stringify({
-                    user_id: auth.user?.profile.sub,
-                    role: profileData.role,
-                    profile_data: profileData
-                })
-            });
+            const response = await fetch(
+                "https://15fvg1d1mg.execute-api.us-east-1.amazonaws.com/prod/profiles",
+                {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "Authorization": `Bearer ${auth.user.access_token}`
+                    },
+                    body: JSON.stringify({
+                        user_id: auth.user?.profile.sub,
+                        role: profileData.role,
+                        profile_data: profileData
+                    })
+                }
+            );
 
             const result = await response.json();
             if (response.ok) {
+                setProfile(profileData);
                 console.log("Profile successfully created:", result);
-                setProfile(profileData);  // Update the profile state
             } else {
                 console.error("Error saving profile:", result);
             }
@@ -123,28 +73,113 @@ function App() {
         }
     };
 
+    useEffect(() => {
+        if (auth.isAuthenticated) {
+            fetchUserProfile();
+        }
+    }, [auth.isAuthenticated]);
+
+    const signoutRedirect = async () => {
+        const clientId = "2fpemjqos4302bfaf65g06l8g0"; 
+        const logoutUri = "https://sessions.red"; 
+        const cognitoDomain = "https://auth.sessions.red"; 
+        const logoutURL = `${cognitoDomain}/logout?client_id=${clientId}&logout_uri=${encodeURIComponent(logoutUri)}&post_logout_redirect_uri=${encodeURIComponent(logoutUri)}`;
+        
+        try {
+            await auth.removeUser(); 
+            window.location.href = logoutURL;
+        } catch (error) {
+            console.error("Error during signout:", error);
+        }
+    };
+
+    const renderHeader = () => (
+        <header className="header">
+            <Link to="/" className="header-logo">
+                <img src="/logo.jpeg" alt="Expert Sessions Logo" className="header-logo-image" />
+                <span className="header-title">Expert Sessions</span>
+            </Link>
+            <nav className="header-nav">
+                {!auth.isAuthenticated ? (
+                    <button className="header-link" onClick={() => auth.signinRedirect()}>
+                        <FaSignInAlt className="header-icon" /> Sign In
+                    </button>
+                ) : (
+                    <>
+                        <Link to="/profile" className="header-link">
+                            <FaUserCircle className="header-icon" /> Profile
+                        </Link>
+                        <button className="header-link" onClick={signoutRedirect}>
+                            <FaSignOutAlt className="header-icon" /> Sign Out
+                        </button>
+                    </>
+                )}
+            </nav>
+        </header>
+    );
+
+    const renderContent = () => {
+        if (!profile) {
+            return (
+                <div className="container">
+                    <div className="card">
+                        {renderHeader()}
+                        <ProfileForm saveUserProfile={saveUserProfile} />
+                    </div>
+                </div>
+            );
+        }
+
+        switch (profile.role) {
+            case "teacher":
+                return (
+                    <div className="container">
+                        <div className="card">
+                            {renderHeader()}
+                            <Services />
+                        </div>
+                    </div>
+                );
+            case "student":
+                return (
+                    <div className="container">
+                        <div className="card">
+                            {renderHeader()}
+                            <Bookings />
+                        </div>
+                    </div>
+                );
+            default:
+                return (
+                    <div className="container">
+                        <div className="card">
+                            {renderHeader()}
+                            <p>Invalid Profile Data. Please update your profile.</p>
+                        </div>
+                    </div>
+                );
+        }
+    };
+
     if (!auth.isAuthenticated) {
-      return (
-          <div className="container">
-            <div className="card">
-              <Header />
-                <p>
-                    Welcome to Expert Sessions – a platform designed to connect you with
-                    experts across various domains.
-                </p>
-                <button className="button" onClick={() => auth.signinRedirect()}>
-                    Sign In to Explore
-                </button>
+        return (
+            <div className="container">
+                <div className="card">
+                    {renderHeader()}
+                    <p>Welcome to Expert Sessions! Sign in to explore.</p>
+                    <button className="button" onClick={() => auth.signinRedirect()}>
+                        Sign In
+                    </button>
+                </div>
             </div>
-          </div>
-      );
+        );
     }
 
     if (auth.isLoading || loadingProfile) {
         return (
             <div className="container">
                 <div className="card">
-                    <h2 className="heading">Loading...</h2>
+                    <h2>Loading...</h2>
                 </div>
             </div>
         );
@@ -154,17 +189,16 @@ function App() {
         return (
             <div className="container">
                 <div className="card">
-                    <h2 className="heading">Something went wrong!</h2>
-                    <p className="sub-heading">{auth.error.message}</p>
-                    <button className="button" onClick={() => auth.signinRedirect()}>
-                        Try Signing In Again
-                    </button>
+                    {renderHeader()}
+                    <h2>Error Occurred!</h2>
+                    <p>{auth.error.message}</p>
+                    <button onClick={() => auth.signinRedirect()}>Try Signing In Again</button>
                 </div>
             </div>
         );
     }
 
-    return renderContent();
-}
+    return <Router>{renderContent()}</Router>;
+};
 
 export default App;
