@@ -74,42 +74,67 @@ function App() {
       }
 
       // Redirect based on the user's role
-      switch (profile.role) {
-          case "teacher":
-              return (
-                <div>{renderHeader()}
-                  <div className="container">
-                      <div className="card">
-                          <Services />
-                      </div>
-                  </div>
-                  </div>
-              );
+      return (
+        <div className="container">
+            <h1>Welcome, {profile.name}</h1>
+            <div className="card-container">
+                {/* Student Cards */}
+                {profile.role === "student" && (
+                    <>
+                        {/* Search Teachers Card */}
+                        <div className="card">
+                            <h3>Search for Teachers or Courses</h3>
+                            <p>Find teachers based on your interests and enroll in available sessions.</p>
+                            <button className="button" onClick={() => alert("Implement search logic")}>
+                                Search Teachers
+                            </button>
+                        </div>
 
-          case "student":
-              return (
-                <div>{renderHeader()}
-                  <div className="container">
-                      <div className="card">
-                          
-                          <Bookings />
-                      </div>
-                  </div>
-                  </div>
-              );
+                        {/* View Student Profile */}
+                        <div className="card">
+                            <h3>Your Profile</h3>
+                            <p>{profile.bio || "Update your bio with educational details and interests."}</p>
+                            <button className="button" onClick={() => setShowProfileForm(true)}>
+                                Edit Profile
+                            </button>
+                        </div>
 
-          default:
-              return (
-                <div>{renderHeader()}
-                  <div className="container">
-                      <div className="card">
-                          
-                          <p>Invalid Profile Data. Please update your profile.</p>
-                      </div>
-                  </div>
-                  </div>
-              );
-      }
+                        {/* View Student Bookings */}
+                        <div className="card">
+                            <h3>Your Bookings</h3>
+                            <p>View the sessions you've enrolled in.</p>
+                            <button className="button" onClick={() => alert("Redirect to Bookings Page")}>
+                                View Bookings
+                            </button>
+                        </div>
+                    </>
+                )}
+
+                {/* Teacher Cards */}
+                {profile.role === "teacher" && (
+                    <>
+                        {/* View Teacher Services */}
+                        <div className="card">
+                            <h3>My Services</h3>
+                            <p>View and manage the services you offer.</p>
+                            <button className="button" onClick={() => alert("Redirect to Services Page")}>
+                                Manage Services
+                            </button>
+                        </div>
+
+                        {/* Edit Profile */}
+                        <div className="card">
+                            <h3>Your Profile</h3>
+                            <p>{profile.bio || "Update your professional details and expertise."}</p>
+                            <button className="button" onClick={() => setShowProfileForm(true)}>
+                                Edit Profile
+                            </button>
+                        </div>
+                    </>
+                )}
+            </div>
+        </div>
+    );
     };
 
     useEffect(() => {
