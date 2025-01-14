@@ -1,11 +1,9 @@
 import React, { useEffect, useState } from "react";
-import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
 import { useAuth } from "react-oidc-context";
 import ProfileForm from "./components/ProfileForm";
 import Services from "./components/Services";
 import Bookings from "./components/Bookings";
 import "./styles.css";
-import { Link } from "react-router-dom";
 import { FaSignInAlt, FaSignOutAlt, FaUserCircle } from "react-icons/fa"; // Import icons
 
 function App() {
@@ -50,7 +48,7 @@ function App() {
               ) : (
                   <>
                       <button className="header-link" onClick={() => setShowProfileForm(true)}>
-                          <FaUserCircle className="header-icon" /> Profile
+                          <FaUserCircle className="header-icon" /> {profile.name}
                       </button>
                       <button className="header-link" onClick={signoutRedirect}>
                           <FaSignOutAlt className="header-icon" /> Sign Out
