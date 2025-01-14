@@ -12,6 +12,7 @@ function App() {
   const [loadingProfile, setLoadingProfile] = useState(true);
   const [profile, setProfile] = useState(null);
   const [showProfileForm, setShowProfileForm] = useState(false);
+  const [showSearchCourses, setShowSearchCourses] = useState(false);
 
   const signoutRedirect = async () => {
     const clientId = "2fpemjqos4302bfaf65g06l8g0"; // Cognito App Client ID
@@ -50,6 +51,9 @@ function App() {
             <button className="header-link" onClick={() => setShowProfileForm(true)}>
               <FaUserCircle className="header-icon" /> {profile.name}
             </button>
+            <button className="header-link" onClick={() => setShowSearchCourses(true)}>
+              <FaUserCircle className="header-icon" /> Search
+            </button>
             <button className="header-link" onClick={signoutRedirect}>
               <FaSignOutAlt className="header-icon" /> Sign Out
             </button>
@@ -82,14 +86,15 @@ function App() {
           {/* Student Cards */}
           {profile.role === "student" && (
             <>
-              {/* Search Teachers Card */}
-              <div className="card">
-                <h3>Search for Teachers or Courses</h3>
-                <p>Find teachers based on your interests and enroll in available sessions.</p>
-                <button className="button" onClick={() => alert("Implement search logic")}>
-                  Search Teachers
-                </button>
-              </div>
+              {showSearchCourses && (
+                <div className="card">
+                  <h3>Search for Teachers or Courses</h3>
+                  <p>Find teachers based on your interests and enroll in available sessions.</p>
+                  <button className="button" onClick={() => alert("Implement search logic")}>
+                    Search Teachers
+                  </button>
+                </div>
+              )}
 
               {/* View Student Profile */}
               <div className="card">
