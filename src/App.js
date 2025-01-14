@@ -9,6 +9,8 @@ import {
   FaSignInAlt,
   FaSignOutAlt,
   FaUserCircle,
+  FaBookOpen,
+  FaChalkboardTeacher,
 } from "react-icons/fa"; // Import icons
 
 function App() {
@@ -70,15 +72,39 @@ function App() {
             >
               <FaUserCircle className="header-icon" /> {profile.name}
             </button>
-            <button
-              className="header-link"
-              onClick={() => {
-                clearAllCards();
-                setShowSearchCoursesCard(true);
-              }}
-            >
-              <FaSearch className="header-icon" /> Search
-            </button>
+            {profile?.role === "student" && (
+              <button
+                className="header-link"
+                onClick={() => {
+                  clearAllCards();
+                  setShowSearchCoursesCard(true);
+                }}
+              >
+                <FaSearch className="header-icon" /> Search
+              </button>
+            )}
+            {profile?.role === "student" && (
+              <button
+                className="header-link"
+                onClick={() => {
+                  clearAllCards();
+                  setShowBookingsCard(true);
+                }}
+              >
+                <FaBookOpen className="header-icon" /> My Classes
+              </button>
+            )}
+            {profile?.role === "teacher" && (
+              <button
+                className="header-link"
+                onClick={() => {
+                  clearAllCards();
+                  setShowMyCoursesCard(true);
+                }}
+              >
+                <FaChalkboardTeacher className="header-icon" /> My Courses
+              </button>
+            )}
             <button className="header-link" onClick={signoutRedirect}>
               <FaSignOutAlt className="header-icon" /> Sign Out
             </button>
