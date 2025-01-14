@@ -4,53 +4,51 @@ import "../styles.css";
 const ProfileForm = ({ saveUserProfile, profile }) => {
     const [role, setRole] = useState(profile?.role || "");
     const [formData, setFormData] = useState({
-        full_name: profile?.full_name || "",
+        name: profile?.name || "",
         year_of_birth: profile?.year_of_birth || "",
         educational_qualification: profile?.educational_qualification || "",
-        learning_interests: profile?.learning_interests || "",
-        location: profile?.location || "IST",
+        learning_interests: Array.isArray(profile?.learning_interests) ? profile?.learning_interests : [],
+        location: profile?.location || "",
         timezone: profile?.timezone || "IST",
-        reason_for_1on1_classes: profile?.reason_for_1on1_classes || "",
-        qualifications: profile?.qualifications || "",
-        detailed_bio: profile?.detailed_bio || "",
+        why_1_1_classes: profile?.why_1_1_classes || "",
+        qualification: profile?.qualification || "",
+        bio: profile?.bio || "",
         associations: profile?.associations || "",
         years_of_experience: profile?.years_of_experience || "",
-        topics_for_teaching: profile?.topics_for_teaching || [],
-        preferred_slots: profile?.preferred_slots || [],
-        testimonials: profile?.testimonials || "",
+        topics: Array.isArray(profile?.topics) ? profile?.topics : [],
+        preferred_slots: Array.isArray(profile?.preferred_slots) ? profile?.preferred_slots : [],
+        testimonials: Array.isArray(profile?.testimonials) ? profile?.testimonials : []
     });
-
-    const cities = [
-        "Mumbai", "Delhi", "Bangalore", "Chennai", "Kolkata", 
-        "New York", "San Francisco", "Los Angeles", "Chicago", "Houston", "Other"
-    ];
-
-    const timezones = [
-        "IST", "EST", "CST", "PST", "UTC", "Other"
-    ];
 
     useEffect(() => {
         if (profile) {
             setRole(profile.role || "");
-            setFormData(profile);
+            setFormData({
+                name: profile.name || "",
+                year_of_birth: profile.year_of_birth || "",
+                educational_qualification: profile.educational_qualification || "",
+                learning_interests: Array.isArray(profile?.learning_interests) ? profile?.learning_interests : [],
+                location: profile.location || "",
+                timezone: profile.timezone || "IST",
+                why_1_1_classes: profile.why_1_1_classes || "",
+                qualification: profile.qualification || "",
+                bio: profile.bio || "",
+                associations: profile.associations || "",
+                years_of_experience: profile.years_of_experience || "",
+                topics: Array.isArray(profile?.topics) ? profile?.topics : [],
+                preferred_slots: Array.isArray(profile?.preferred_slots) ? profile?.preferred_slots : [],
+                testimonials: Array.isArray(profile?.testimonials) ? profile?.testimonials : []
+            });
         }
     }, [profile]);
 
     const handleInputChange = (e) => {
-        const { name, value } = e.target;
-        setFormData({ ...formData, [name]: value });
+        setFormData({ ...formData, [e.target.name]: e.target.value });
     };
 
-    const handleMultiSelectChange = (e) => {
-        const { options } = e.target;
-        const selected = Array.from(options).filter(opt => opt.selected).map(opt => opt.value);
-        setFormData({ ...formData, topics_for_teaching: selected });
-    };
-
-    const handleSlotChange = (e) => {
-        const { value } = e.target;
-        const slots = value.split(",").map(slot => slot.trim());
-        setFormData({ ...formData, preferred_slots: slots });
+    const handleArrayInputChange = (e, fieldName) => {
+        const values = e.target.value.split(",").map((item) => item.trim());
+        setFormData({ ...formData, [fieldName]: values });
     };
 
     const handleSubmit = async (e) => {
@@ -62,98 +60,110 @@ const ProfileForm = ({ saveUserProfile, profile }) => {
         <div className="profile-form">
             <form onSubmit={handleSubmit}>
                 <h2>Complete Your Profile</h2>
-                
-                {/* Role Selection */}
                 <label>Role</label>
-                <select name="role" value={role} onChange={(e) => setRole(e.target.value)} required>
+                <select
+                    name="role"
+                    value={role}
+                    onChange={(e) => setRole(e.target.value)}
+                    required
+                >
                     <option value="">Select Role</option>
                     <option value="student">Student</option>
                     <option value="teacher">Teacher</option>
                 </select>
 
-                {/* Common Fields */}
-                <input
-                    type="text"
-                    name="full_name"
-                    value={formData.full_name}
-                    placeholder="Full Name"
-                    onChange={handleInputChange}
-                    required
-                />
-                <input
-                    type="number"
-                    name="year_of_birth"
-                    value={formData.year_of_birth}
-                    placeholder="Year of Birth"
-                    onChange={handleInputChange}
-                    required
-                />
-
-                {/* Student-Specific Fields */}
+                {/* Student Specific Fields */}
                 {role === "student" && (
                     <>
                         <input
                             type="text"
+                            name="name"
+                            value={formData.name}
+                            placeholder="Full Name"
+                            onChange={handleInputChange}
+                            required
+                        />
+                        <input
+                            type="number"
+                            name="year_of_birth"
+                            value={formData.year_of_birth}
+                            placeholder="Year of Birth"
+                            onChange={handleInputChange}
+                            required
+                        />
+                        <input
+                            type="text"
                             name="educational_qualification"
                             value={formData.educational_qualification}
-                            placeholder="Highest Educational Qualification"
+                            placeholder="Educational Qualification"
                             onChange={handleInputChange}
                             required
                         />
                         <input
                             type="text"
                             name="learning_interests"
-                            value={formData.learning_interests}
-                            placeholder="Learning Interests"
-                            onChange={handleInputChange}
-                            required
+                            value={formData.learning_interests.join(", ")}
+                            placeholder="Learning Interests (comma-separated)"
+                            onChange={(e) => handleArrayInputChange(e, "learning_interests")}
                         />
-                        <label>Location</label>
                         <select
                             name="location"
                             value={formData.location}
                             onChange={handleInputChange}
                             required
                         >
-                            {cities.map((city, index) => (
-                                <option key={index} value={city}>{city}</option>
-                            ))}
+                            <option value="">Select Location</option>
+                            <option value="Bangalore">Bangalore</option>
+                            <option value="Mumbai">Mumbai</option>
+                            <option value="New York">New York</option>
+                            <option value="San Francisco">San Francisco</option>
+                            <option value="Other">Other</option>
                         </select>
-                        <label>Timezone</label>
-                        <select
+                        <input
+                            type="text"
                             name="timezone"
                             value={formData.timezone}
                             onChange={handleInputChange}
-                            required
-                        >
-                            {timezones.map((zone, index) => (
-                                <option key={index} value={zone}>{zone}</option>
-                            ))}
-                        </select>
+                            placeholder="Timezone (default: IST)"
+                        />
                         <textarea
-                            name="reason_for_1on1_classes"
-                            value={formData.reason_for_1on1_classes}
+                            name="why_1_1_classes"
+                            value={formData.why_1_1_classes}
                             placeholder="Why do you want to get 1:1 classes?"
                             onChange={handleInputChange}
-                            required
                         />
                     </>
                 )}
 
-                {/* Teacher-Specific Fields */}
+                {/* Teacher Specific Fields */}
                 {role === "teacher" && (
                     <>
                         <input
                             type="text"
-                            name="qualifications"
-                            value={formData.qualifications}
+                            name="name"
+                            value={formData.name}
+                            placeholder="Full Name"
+                            onChange={handleInputChange}
+                            required
+                        />
+                        <input
+                            type="number"
+                            name="year_of_birth"
+                            value={formData.year_of_birth}
+                            placeholder="Year of Birth"
+                            onChange={handleInputChange}
+                            required
+                        />
+                        <textarea
+                            name="qualification"
+                            value={formData.qualification}
                             placeholder="Qualifications"
                             onChange={handleInputChange}
                             required
                         />
                         <textarea
-                            name="detailed_bio"
-                            value={formData.detailed_bio}
+                            name="bio"
+                            value={formData.bio}
                             placeholder="Detailed Bio"
                             onChange={handleInputChange}
                             required
@@ -169,43 +179,33 @@ const ProfileForm = ({ saveUserProfile, profile }) => {
                             type="number"
                             name="years_of_experience"
                             value={formData.years_of_experience}
-                            placeholder="Years of Experience"
+                            placeholder="Years of Experience in Teaching"
                             onChange={handleInputChange}
                             required
                         />
-                        <label>Topics for Teaching (Hold Ctrl to select multiple)</label>
-                        <select
-                            name="topics_for_teaching"
-                            multiple
-                            value={formData.topics_for_teaching}
-                            onChange={handleMultiSelectChange}
-                            required
-                        >
-                            <option value="Mathematics">Mathematics</option>
-                            <option value="Science">Science</option>
-                            <option value="History">History</option>
-                            <option value="Music">Music</option>
-                            <option value="Language">Language</option>
-                        </select>
-                        <label>Preferred Slots for Teaching (Comma Separated)</label>
+                        <input
+                            type="text"
+                            name="topics"
+                            value={formData.topics.join(", ")}
+                            placeholder="Topics for Teaching (comma-separated)"
+                            onChange={(e) => handleArrayInputChange(e, "topics")}
+                        />
                         <input
                             type="text"
                             name="preferred_slots"
                             value={formData.preferred_slots.join(", ")}
-                            placeholder="e.g., Monday 10am-12pm, Friday 3pm-5pm"
-                            onChange={handleSlotChange}
-                            required
+                            placeholder="Preferred Teaching Slots (comma-separated)"
+                            onChange={(e) => handleArrayInputChange(e, "preferred_slots")}
                         />
                         <textarea
                             name="testimonials"
-                            value={formData.testimonials}
-                            placeholder="Testimonials from students"
-                            onChange={handleInputChange}
+                            value={formData.testimonials.join(", ")}
+                            placeholder="Student Testimonials (comma-separated)"
+                            onChange={(e) => handleArrayInputChange(e, "testimonials")}
                         />
                     </>
                 )}
 
-                {/* Submit Button */}
                 <button type="submit">Save Profile</button>
             </form>
         </div>
