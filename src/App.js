@@ -11,8 +11,10 @@ function App() {
 
   const [loadingProfile, setLoadingProfile] = useState(true);
   const [profile, setProfile] = useState(null);
-  const [showProfileForm, setShowProfileForm] = useState(false);
-  const [showSearchCourses, setShowSearchCourses] = useState(false);
+  const [showProfileCard, setShowProfileCard] = useState(false);
+  const [showSearchCoursesCard, setShowSearchCoursesCard] = useState(false);
+  const [showBookingsCard, setShowBookingsCard] = useState(false);
+  const [showMyCoursesCard, setShowMyCoursesCard] = useState(false);
 
   const signoutRedirect = async () => {
     const clientId = "2fpemjqos4302bfaf65g06l8g0"; // Cognito App Client ID
@@ -20,7 +22,9 @@ function App() {
     const cognitoDomain = "https://auth.sessions.red"; // Cognito domain
 
     // Construct the logout URL with the post-logout redirect URI
-    const logoutURL = `${cognitoDomain}/logout?client_id=${clientId}&logout_uri=${encodeURIComponent(logoutUri)}&post_logout_redirect_uri=${encodeURIComponent(logoutUri)}`;
+    const logoutURL = `${cognitoDomain}/logout?client_id=${clientId}&logout_uri=${encodeURIComponent(
+      logoutUri
+    )}&post_logout_redirect_uri=${encodeURIComponent(logoutUri)}`;
 
     console.log("Logout URL:", logoutURL); // Log for debugging
 
@@ -38,7 +42,11 @@ function App() {
   const renderHeader = () => (
     <header className="header">
       <div className="header-logo">
-        <img src="/logo.jpeg" alt="Expert Sessions Logo" className="header-logo-image" />
+        <img
+          src="/logo.jpeg"
+          alt="Expert Sessions Logo"
+          className="header-logo-image"
+        />
         <span className="header-title">Expert Sessions</span>
       </div>
       <nav className="header-nav">
@@ -48,10 +56,16 @@ function App() {
           </button>
         ) : (
           <>
-            <button className="header-link" onClick={() => setShowProfileForm(true)}>
+            <button
+              className="header-link"
+              onClick={() => setShowProfileCard(true)}
+            >
               <FaUserCircle className="header-icon" /> {profile.name}
             </button>
-            <button className="header-link" onClick={() => setShowSearchCourses(true)}>
+            <button
+              className="header-link"
+              onClick={() => setShowSearchCoursesCard(true)}
+            >
               <FaUserCircle className="header-icon" /> Search
             </button>
             <button className="header-link" onClick={signoutRedirect}>
@@ -63,81 +77,41 @@ function App() {
     </header>
   );
 
+  const clearAllCards = () => {
+    setShowProfileCard(false);
+    setShowSearchCoursesCard(false);
+    setShowBookingsCard(false);
+    setShowMyCoursesCard(false);
+  };
+
   const renderContent = () => {
-    if (!profile || showProfileForm) {
-      return (
-        <div>{renderHeader()}
-          <div className="container">
-            <div className="card">
-
-              <ProfileForm saveUserProfile={saveUserProfile} profile={profile} />
-            </div>
-          </div>
-        </div>
-      );
-    }
-
-    // Redirect based on the user's role
     return (
-      <div>{renderHeader()}
+      <div>
+        {renderHeader()}
         <div className="container">
-
-
-          {/* Student Cards */}
-          {profile.role === "student" && (
-            <>
-              {showSearchCourses && (
-                <div className="card">
-                  <h3>Search for Teachers or Courses</h3>
-                  <p>Find teachers based on your interests and enroll in available sessions.</p>
-                  <button className="button" onClick={() => alert("Implement search logic")}>
-                    Search Teachers
-                  </button>
-                </div>
-              )}
-
-              {/* View Student Profile */}
-              <div className="card">
-                <h3>Your Profile</h3>
-                <p>{profile.bio || "Update your bio with educational details and interests."}</p>
-                <button className="button" onClick={() => setShowProfileForm(true)}>
-                  Edit Profile
+          <div className="card">
+            {(!profile || showProfileCard) && (
+              <ProfileForm
+                saveUserProfile={saveUserProfile}
+                profile={profile}
+              />
+            )}
+            {showSearchCoursesCard && (
+              <div>
+                <h3>Search for Teachers or Courses</h3>
+                <p>
+                  Find teachers based on your interests and enroll in available
+                  sessions.
+                </p>
+                <button
+                  className="button"
+                  onClick={() => alert("Implement search logic")}
+                >
+                  Search Teachers
                 </button>
               </div>
-
-              {/* View Student Bookings */}
-              <div className="card">
-                <h3>Your Bookings</h3>
-                <p>View the sessions you've enrolled in.</p>
-                <button className="button" onClick={() => alert("Redirect to Bookings Page")}>
-                  View Bookings
-                </button>
-              </div>
-            </>
-          )}
-
-          {/* Teacher Cards */}
-          {profile.role === "teacher" && (
-            <>
-              {/* View Teacher Services */}
-              <div className="card">
-                <h3>My Services</h3>
-                <p>View and manage the services you offer.</p>
-                <button className="button" onClick={() => alert("Redirect to Services Page")}>
-                  Manage Services
-                </button>
-              </div>
-
-              {/* Edit Profile */}
-              <div className="card">
-                <h3>Your Profile</h3>
-                <p>{profile.bio || "Update your professional details and expertise."}</p>
-                <button className="button" onClick={() => setShowProfileForm(true)}>
-                  Edit Profile
-                </button>
-              </div>
-            </>
-          )}
+            )}
+          </div>
         </div>
       </div>
     );
@@ -154,15 +128,15 @@ function App() {
               method: "GET",
               headers: {
                 "Content-Type": "application/json",
-                "Authorization": `Bearer ${auth.user.access_token}`
-              }
+                Authorization: `Bearer ${auth.user.access_token}`,
+              },
             }
           );
           const data = await response.json();
           if (response.ok && data.profile) {
             setProfile(data.profile);
           } else {
-            setProfile(null);  // No profile found, trigger profile form
+            setProfile(null); // No profile found, trigger profile form
           }
         } catch (error) {
           console.error("Error fetching profile:", error);
@@ -173,29 +147,31 @@ function App() {
     };
 
     fetchUserProfile();
-
   }, [auth.isAuthenticated]);
 
   const saveUserProfile = async (profileData) => {
     try {
-      const response = await fetch("https://15fvg1d1mg.execute-api.us-east-1.amazonaws.com/prod/profiles", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "Authorization": `Bearer ${auth.user.access_token}`
-        },
-        body: JSON.stringify({
-          user_id: auth.user?.profile.sub,
-          role: profileData.role,
-          profile_data: profileData
-        })
-      });
+      const response = await fetch(
+        "https://15fvg1d1mg.execute-api.us-east-1.amazonaws.com/prod/profiles",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${auth.user.access_token}`,
+          },
+          body: JSON.stringify({
+            user_id: auth.user?.profile.sub,
+            role: profileData.role,
+            profile_data: profileData,
+          }),
+        }
+      );
 
       const result = await response.json();
       if (response.ok) {
         console.log("Profile successfully created:", result);
-        setProfile(profileData);  // Update the profile state
-        setShowProfileForm(false);
+        setProfile(profileData); // Update the profile state
+        setShowProfileCard(false);
       } else {
         console.error("Error saving profile:", result);
       }
@@ -206,20 +182,18 @@ function App() {
 
   if (!auth.isAuthenticated) {
     return (
-      <div>{renderHeader()}
-        <div className="container" >
-
-          <div className="card" >
-
+      <div>
+        {renderHeader()}
+        <div className="container">
+          <div className="card">
             <p>
-              Welcome to Expert Sessions – a platform designed to connect you with
-              experts across various domains.
+              Welcome to Expert Sessions – a platform designed to connect you
+              with experts across various domains.
             </p>
             <button className="button" onClick={() => auth.signinRedirect()}>
               Sign In to Explore
             </button>
           </div>
-
         </div>
       </div>
     );
