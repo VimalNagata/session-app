@@ -4,7 +4,12 @@ import ProfileForm from "./components/ProfileForm";
 import Services from "./components/Services";
 import Bookings from "./components/Bookings";
 import "./styles.css";
-import { FaSignInAlt, FaSignOutAlt, FaUserCircle } from "react-icons/fa"; // Import icons
+import {
+  FaSearch,
+  FaSignInAlt,
+  FaSignOutAlt,
+  FaUserCircle,
+} from "react-icons/fa"; // Import icons
 
 function App() {
   const auth = useAuth();
@@ -58,15 +63,21 @@ function App() {
           <>
             <button
               className="header-link"
-              onClick={() => setShowProfileCard(true)}
+              onClick={() => {
+                clearAllCards();
+                setShowProfileCard(true);
+              }}
             >
               <FaUserCircle className="header-icon" /> {profile.name}
             </button>
             <button
               className="header-link"
-              onClick={() => setShowSearchCoursesCard(true)}
+              onClick={() => {
+                clearAllCards();
+                setShowSearchCoursesCard(true);
+              }}
             >
-              <FaUserCircle className="header-icon" /> Search
+              <FaSearch className="header-icon" /> Search
             </button>
             <button className="header-link" onClick={signoutRedirect}>
               <FaSignOutAlt className="header-icon" /> Sign Out
